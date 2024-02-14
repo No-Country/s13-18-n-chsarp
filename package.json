@@ -9,8 +9,7 @@
     "lint": "next lint",
     "prettier": "prettier --write .",
     "format": "pretty-quick",
-    "ts-lint": "tsc --noEmit --incremental",
-    "prepare": "husky"
+    "ts-lint": "tsc --noEmit --incremental"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
