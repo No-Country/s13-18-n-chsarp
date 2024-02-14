@@ -1,7 +1,0 @@
-{
-    "hooks": {
-        "pre-push": "pnpm exec tsc --noEmit --incremental",
-        "commit-msg": "npx --no -- commitlint --edit $1",
-        "pre-commit": "pnpm lint && pnpm prettier"
-    }
-}
