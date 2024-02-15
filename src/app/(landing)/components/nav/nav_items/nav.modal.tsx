@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
+import { ModeToggle } from '@/components';
 import { buttonVariants } from '@/components/ui';
 import { cn } from '@/lib';
-import { ModeToggle } from './mode-toggle';
 
 interface Props {
   handleClose: () => void;

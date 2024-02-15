@@ -1,5 +1,6 @@
-import { ModeToggle } from '@/components';
 import type { FC, PropsWithChildren, ReactElement } from 'react';
+
+import { ModeToggle } from '@/components';
 
 const MainLayout: FC<PropsWithChildren> = ({
   children,
