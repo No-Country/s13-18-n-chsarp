@@ -4,11 +4,12 @@ import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import type { FC, ReactElement } from 'react';
 
+import { ModeToggle } from '@/components';
 import { Button, buttonVariants } from '@/components/ui';
 import { cn } from '@/lib';
 import { AppRoutes } from '@/models';
 import { useNav } from '../../hooks';
-import { ModeToggle, NavModal } from './nav_items';
+import { NavModal } from './nav_items';
 
 export const Nav: FC = (): ReactElement => {
   const { isBigScreen, modalIsOpen, setModalIsOpen } = useNav();
