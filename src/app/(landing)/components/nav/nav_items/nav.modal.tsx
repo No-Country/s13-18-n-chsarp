@@ -1,13 +1,14 @@
-import { cn } from '@/lib';
 import Link from 'next/link';
+
+import { buttonVariants } from '@/components/ui';
+import { cn } from '@/lib';
 import { ModeToggle } from './mode-toggle';
-import { buttonVariants } from './ui';
 
 interface Props {
   handleClose: () => void;
 }
 
-const NavModal = ({ handleClose }: Props) => {
+export const NavModal = ({ handleClose }: Props) => {
   return (
     <div className="py-3 px-6 mt-auto">
       <div className="flex flex-col gap-y-4">
@@ -38,5 +39,3 @@ const NavModal = ({ handleClose }: Props) => {
     </div>
   );
 };
-
-export default NavModal;

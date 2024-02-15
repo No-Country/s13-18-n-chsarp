@@ -1,14 +1,13 @@
-import { Nav } from '@/components';
 import type { FC, PropsWithChildren, ReactElement } from 'react';
+
+import { Header } from './components';
 
 const LandingLayout: FC<PropsWithChildren> = ({
   children,
 }: PropsWithChildren): ReactElement => {
   return (
     <div className="relative">
-      <header className="fixed top-0 bg-background w-full">
-        <Nav />
-      </header>
+      <Header />
       {children}
     </div>
   );
