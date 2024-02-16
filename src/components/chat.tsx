@@ -1,6 +1,4 @@
-interface Props {}
-
-export const Chat = ({}: Props) => {
+export const Chat = () => {
   return (
     <div className="flex flex-col h-full">
       <div>TODO: Message List</div>
