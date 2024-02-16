@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <Folder Include="Bll\" />
-    <Folder Include="Domain\Dto\" />
     <Folder Include="Domain\Interfaces\Api\" />
     <Folder Include="Domain\Interfaces\Bll\" />
   </ItemGroup>

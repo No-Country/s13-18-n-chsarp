@@ -1,8 +1,7 @@
 ﻿namespace Api.Domain.ViewModels.Server
 {
-    public class TopicRequest
+    public class TopicVModel
     {
-        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
     }

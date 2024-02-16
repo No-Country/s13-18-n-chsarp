@@ -6,7 +6,7 @@ namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ServerController : ControllerBase
+    public class ChannelsController : ControllerBase
     {
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ChannelResponse>>> GetAll()

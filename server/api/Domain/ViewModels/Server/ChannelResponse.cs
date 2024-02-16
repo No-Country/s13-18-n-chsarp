@@ -12,6 +12,6 @@ namespace Api.Domain.ViewModels.Server
         public DateTime Duration { get; set; }
         public CHANNEL_STATE State { get; set; }
         public CHANNEL_TYPE Type { get; set; }
-        public List<Topic> Topics { get; set; } = new List<Topic>();
+        public List<TopicVModel> Topics { get; set; } = new List<TopicVModel>();
     }
 }
