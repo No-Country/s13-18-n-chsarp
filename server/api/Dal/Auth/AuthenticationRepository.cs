@@ -29,8 +29,8 @@ public class AuthenticationRepository : IAuthenticationRepository
                 Email = request.Email,
                 Name = request.Name,
                 UserName = request.Email,
-                Dni = request.Dni,
-                DateOfBirth = request.DateOfBirth,
+                Dni = request.Dni??"",
+                DateOfBirth = request.DateOfBirth??new DateTime(1,1,1),
                 Gender = request.Gender,
             };
 
@@ -40,17 +40,17 @@ public class AuthenticationRepository : IAuthenticationRepository
             {
                 await _userManager.AddToRoleAsync(user, Role.User);
                 var jwt = GetToken(user, new[] { new Claim("Role", Role.User) });
-                return new RegisterResponse(jwt, "Success", true, user.ToResponse());
+                return new RegisterResponse(jwt,user.Email, "Success", true, user.ToResponse());
             }
             else
             {
                 var messages = string.Join("-", result.Errors.Select(x => $"{x.Code}|{x.Description}"));
-                return new RegisterResponse("", messages, false, null);
+                return new RegisterResponse("", "", messages, false, null);
             }
         }
         catch (Exception e)
         {
-            return new RegisterResponse("", e.Message, false, null);
+            return new RegisterResponse("", "", e.Message, false, null);
         }
     }
     public async Task<LoginResponse> Login(LoginRequest request)
@@ -61,7 +61,7 @@ public class AuthenticationRepository : IAuthenticationRepository
 
         if (user is null || !await _userManager.CheckPasswordAsync(user, request.Password))
         {
-            return new LoginResponse(null, "Invalid Credentials", false, null);
+            return new LoginResponse(null,"", "Invalid Credentials", false, null);
         }
 
         var authClaims = new List<Claim>
@@ -77,7 +77,7 @@ public class AuthenticationRepository : IAuthenticationRepository
 
         var token = GetToken(authClaims);
 
-        return new LoginResponse(new JwtSecurityTokenHandler().WriteToken(token), "Login Successful", true, user.ToResponse());
+        return new LoginResponse(new JwtSecurityTokenHandler().WriteToken(token), user.Email, "Login Successful", true, user.ToResponse());
     }
 
 
