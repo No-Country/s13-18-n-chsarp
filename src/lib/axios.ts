@@ -4,12 +4,14 @@ import axios, {
 } from 'axios';
 
 import { errorResponseInterceptor } from '@/interceptors';
-import { BASE_API_URL } from '@/models';
+import { API_PREFIX, BASE_API_URL } from '@/models';
 
 /**
  * Instancia de axios.
  */
-export const Axios: AxiosInstance = axios.create({ baseURL: BASE_API_URL });
+export const Axios: AxiosInstance = axios.create({
+  baseURL: BASE_API_URL + API_PREFIX,
+});
 
 Axios.interceptors.request.use((req: InternalAxiosRequestConfig) => req);
 Axios.interceptors.response.use((res) => res, errorResponseInterceptor);

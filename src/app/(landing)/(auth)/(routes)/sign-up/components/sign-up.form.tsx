@@ -1,28 +1,37 @@
 'use client';
 
-import { Loader2 } from 'lucide-react';
+import { format } from 'date-fns';
+import { CalendarIcon, Loader2 } from 'lucide-react';
 import type { FC, ReactElement } from 'react';
 
 import {
   Button,
-  Input,
-  RadioGroup,
-  RadioGroupItem,
+  Calendar,
   Form,
-  FormLabel,
   FormControl,
-  FormMessage,
   FormField,
   FormItem,
+  FormLabel,
+  FormMessage,
+  Input,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  RadioGroup,
+  RadioGroupItem,
 } from '@/components/ui';
+import { cn } from '@/lib';
 import { useSignUp } from '../hooks';
 
 export const SignUpForm: FC = (): ReactElement => {
-  const { form, status } = useSignUp();
+  const { form, status, handleSignUp } = useSignUp();
 
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-y-5">
+      <form
+        className="flex flex-col gap-y-5"
+        onSubmit={form.handleSubmit(handleSignUp)}
+      >
         <h2 className="text-4xl text-center"> Registrate </h2>
         <FormField
           control={form.control}
@@ -67,6 +76,47 @@ export const SignUpForm: FC = (): ReactElement => {
                   {...field}
                 />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="dateOfBirth"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel> Fecha de Nacimiento : </FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={'outline'}
+                      className={cn(
+                        'w-full pl-3 text-left font-normal',
+                        !field.value && 'text-muted-foreground'
+                      )}
+                    >
+                      {field.value ? (
+                        format(field.value, 'PPP')
+                      ) : (
+                        <span> Selecciona una Fecha </span>
+                      )}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    disabled={(date) =>
+                      date > new Date() || date < new Date('1900-01-01')
+                    }
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
               <FormMessage />
             </FormItem>
           )}

@@ -27,12 +27,6 @@ export const signUpSchema = z.object({
       invalid_type_error: AuthErrorsModel.INVALID_PASS,
     })
     .min(8, { message: AuthErrorsModel.PASS_MIN_LENGTH }),
-  dni: z
-    .string({
-      required_error: AuthErrorsModel.DNI_REQUIRED,
-      invalid_type_error: AuthErrorsModel.INVALID_DNI,
-    })
-    .min(8, { message: AuthErrorsModel.DNI_MIN_LENGTH }),
   dateOfBirth: z.date({
     required_error: AuthErrorsModel.DOB_REQUIRED,
     invalid_type_error: AuthErrorsModel.INVALID_TYPE_DOB,

@@ -1,13 +1,17 @@
-import { create } from 'zustand';
+import { create, type StateCreator } from 'zustand';
 
-interface UserStore {
-  user: object | null;
-  setUser: (user: any) => void;
+import { UserLogged } from '@/models';
+
+interface UserState {
+  user: UserLogged | null;
+  setUser: (user: UserLogged) => void;
   clearUser: () => void;
 }
 
-export const useUserStore = create<UserStore>((set) => ({
+const userStore: StateCreator<UserState> = (set) => ({
   user: null,
   setUser: (user) => set({ user }),
-  clearUser: () => set({ user: {} }),
-}));
+  clearUser: () => set({ user: null }),
+});
+
+export const useUserStore = create<UserState>()(userStore);

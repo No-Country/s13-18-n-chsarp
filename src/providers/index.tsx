@@ -2,6 +2,7 @@ import type { FC, PropsWithChildren, ReactElement } from 'react';
 
 import { ModalProvider } from './modal.provider';
 import { ThemeProvider } from './theme-provider';
+import { NotistackProvider } from './notistack.provider';
 
 export const GlobalProviders: FC<PropsWithChildren> = ({
   children,
@@ -14,7 +15,7 @@ export const GlobalProviders: FC<PropsWithChildren> = ({
       storageKey="app-theme"
     >
       <ModalProvider />
-      {children}
+      <NotistackProvider>{children}</NotistackProvider>
     </ThemeProvider>
   );
 };
