@@ -5,14 +5,15 @@ import Link from 'next/link';
 import type { FC, ReactElement } from 'react';
 
 import { ModeToggle } from '@/components';
-import { Button, buttonVariants } from '@/components/ui';
+import { Button } from '@/components/ui';
 import { cn } from '@/lib';
 import { AppRoutes } from '@/models';
 import { useNav } from '../../hooks';
-import { NavModal } from './nav_items';
+import { NavButtons, NavModal } from './nav_items';
 
 export const Nav: FC = (): ReactElement => {
   const { isBigScreen, modalIsOpen, setModalIsOpen } = useNav();
+  const handleClose = () => setModalIsOpen(false);
 
   return (
     <nav className={cn(modalIsOpen && 'h-screen flex flex-col bg-background')}>
@@ -23,21 +24,7 @@ export const Nav: FC = (): ReactElement => {
           </Link>
         </h1>
         <div className="flex gap-x-4 max-md:hidden">
-          <ul className="flex gap-x-4">
-            <li>
-              <Link
-                href={AppRoutes.SIGN_IN}
-                className={buttonVariants({ variant: 'outline' })}
-              >
-                Ingreso
-              </Link>
-            </li>
-            <li>
-              <Link href={AppRoutes.SIGN_UP} className={buttonVariants()}>
-                Registro
-              </Link>
-            </li>
-          </ul>
+          <NavButtons handleClose={handleClose} />
           <ModeToggle />
         </div>
 
@@ -51,9 +38,7 @@ export const Nav: FC = (): ReactElement => {
           {modalIsOpen && <X className="h-[1.2rem] w-[1.2rem]" />}
         </Button>
       </div>
-      {modalIsOpen && !isBigScreen && (
-        <NavModal handleClose={() => setModalIsOpen(false)} />
-      )}
+      {modalIsOpen && !isBigScreen && <NavModal handleClose={handleClose} />}
     </nav>
   );
 };

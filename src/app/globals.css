@@ -107,3 +107,31 @@
     @apply bg-background text-foreground;
   }
 }
+
+body::-webkit-scrollbar {
+  width: 0.6rem;
+}
+
+body::-webkit-scrollbar-track {
+  background-color: #ffffff65;
+  border-radius: 0.6rem;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #5d8966;
+  border-radius: 0.6rem;
+}
+
+div[role='dialog']::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+div[role='dialog']::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 0.5rem;
+}
+
+div[role='dialog']::-webkit-scrollbar-thumb {
+  background-color: #5d8966;
+  border-radius: 0.5rem;
+}

@@ -19,7 +19,9 @@ export const errorResponseInterceptor:
   if (response?.data.errors) {
     Object.entries(response?.data.errors).forEach(([key, value]) => {
       const errorArray = value as string[];
-      SnackbarManager.error(getValidationError(errorArray[0]));
+      errorArray.forEach((error) => {
+        SnackbarManager.error(getValidationError(error));
+      });
     });
   }
 };
