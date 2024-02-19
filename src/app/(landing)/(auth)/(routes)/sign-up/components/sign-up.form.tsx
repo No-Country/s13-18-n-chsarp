@@ -1,7 +1,7 @@
 'use client';
 
 import { format } from 'date-fns';
-import { CalendarIcon, Loader2 } from 'lucide-react';
+import { CalendarIcon } from 'lucide-react';
 import type { FC, ReactElement } from 'react';
 
 import {
@@ -21,6 +21,8 @@ import {
   RadioGroupItem,
 } from '@/components/ui';
 import { cn } from '@/lib';
+import { AppRoutes } from '@/models';
+import { AuthFooter, EmailInput, PasswordInput } from '../../../components';
 import { useSignUp } from '../hooks';
 
 export const SignUpForm: FC = (): ReactElement => {
@@ -32,15 +34,31 @@ export const SignUpForm: FC = (): ReactElement => {
         className="flex flex-col gap-y-5"
         onSubmit={form.handleSubmit(handleSignUp)}
       >
-        <h2 className="text-4xl text-center"> Registrate </h2>
+        <h2 className="text-4xl text-center">
+          {' '}
+          ¡Nos alegra mucho que te sumes a ConTAnoS!{' '}
+        </h2>
+        <p>
+          ¿Ya tienes una cuenta?{' '}
+          <a
+            className="underline hover:text-[#5D8966] transition-colors"
+            href={AppRoutes.SIGN_IN}
+          >
+            Inicia sesión
+          </a>
+        </p>
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel> Nombre : </FormLabel>
+              <FormLabel className="text-[#5D8966]"> Nombre : </FormLabel>
               <FormControl>
-                <Input placeholder="Ingresa tu Nombre" {...field} />
+                <Input
+                  className="h-[2.813rem]"
+                  placeholder="Ingresa tu Nombre"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -49,50 +67,29 @@ export const SignUpForm: FC = (): ReactElement => {
         <FormField
           control={form.control}
           name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel> E-Mail : </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Ingresa tu E-mail"
-                  type="email"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          render={({ field }) => <EmailInput field={field} />}
         />
         <FormField
           control={form.control}
           name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel> Contraseña : </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Ingresa tu Contraseña"
-                  type="password"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          render={({ field }) => <PasswordInput field={field} />}
         />
         <FormField
           control={form.control}
           name="dateOfBirth"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel> Fecha de Nacimiento : </FormLabel>
+              <FormLabel className="text-[#5D8966]">
+                {' '}
+                Fecha de Nacimiento :{' '}
+              </FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
                       variant={'outline'}
                       className={cn(
-                        'w-full pl-3 text-left font-normal',
+                        'w-full pl-3 text-left font-normal h-[2.813rem]',
                         !field.value && 'text-muted-foreground'
                       )}
                     >
@@ -126,7 +123,7 @@ export const SignUpForm: FC = (): ReactElement => {
           name="gender"
           render={({ field }) => (
             <FormItem className="space-y-3">
-              <FormLabel> Género : </FormLabel>
+              <FormLabel className="text-[#5D8966]"> Género : </FormLabel>
               <FormControl>
                 <RadioGroup
                   className="flex flex-col space-y-1"
@@ -159,19 +156,23 @@ export const SignUpForm: FC = (): ReactElement => {
             </FormItem>
           )}
         />
-        <Button
-          className="
-            mt-5 bg-black text-white hover:border hover:border-black dark:bg-white dark:text-black
-            hover:bg-white hover:text-black dark:hover:border-white dark:hover:bg-black
-            dark:hover:text-white
-          "
-          type="submit"
-        >
-          Registrate
-          {status.isLoading && (
-            <Loader2 className="animate-spin h-5 w-5 ml-1.5" />
-          )}
-        </Button>
+        <fieldset className="flex items-baseline gap-x-2 accent-[#5D8966]">
+          <input type="checkbox" id="emails" />
+          <label htmlFor="emails">
+            Quiero recibir correos sobre ConTAnoS, fechas especiales en la
+            comunidad e información de relevancia sobre temas que me interesan.
+          </label>
+        </fieldset>
+        <p>
+          Al crear una cuenta, accedes a los{' '}
+          <a className="underline">Terminos de uso</a> y a la{' '}
+          <a className="underline">Política de privacidad.</a>
+        </p>
+        <AuthFooter
+          loading={status.isLoading}
+          isValid={form.formState.isValid}
+          authType="register"
+        />
       </form>
     </Form>
   );

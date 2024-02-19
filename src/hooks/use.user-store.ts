@@ -1,6 +1,7 @@
 import { create, type StateCreator } from 'zustand';
+import { devtools, persist } from 'zustand/middleware';
 
-import { UserLogged } from '@/models';
+import { StoresNames, UserLogged } from '@/models';
 
 interface UserState {
   user: UserLogged | null;
@@ -14,4 +15,6 @@ const userStore: StateCreator<UserState> = (set) => ({
   clearUser: () => set({ user: null }),
 });
 
-export const useUserStore = create<UserState>()(userStore);
+export const useUserStore = create<UserState>()(
+  devtools(persist(userStore, { name: StoresNames.user }))
+);
