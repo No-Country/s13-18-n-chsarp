@@ -16,11 +16,14 @@ import {
 import { useSignIn } from '../hooks';
 
 export const SignInForm: FC = (): ReactElement => {
-  const { form, status } = useSignIn();
+  const { form, status, handleSignIn } = useSignIn();
 
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-y-5">
+      <form
+        className="flex flex-col gap-y-5"
+        onSubmit={form.handleSubmit(handleSignIn)}
+      >
         <h2 className="text-4xl text-center"> Iniciar Sesión </h2>
         <FormField
           control={form.control}

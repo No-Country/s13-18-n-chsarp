@@ -1,9 +1,9 @@
 import { Axios } from '@/lib';
-import { UserLogged } from '@/models';
+import { UserLogged, AxiosCall } from '@/models';
 import { loadAbort } from '@/utils';
 import { AUTH_BASE_PATH, AUTH_ROUTES } from '../models';
 
-export const signIn = (data: any) => {
+export const signIn = (data: any): AxiosCall<UserLogged> => {
   const url = AUTH_BASE_PATH + AUTH_ROUTES.SIGN_IN;
   const Controller = loadAbort();
 
@@ -13,7 +13,7 @@ export const signIn = (data: any) => {
   };
 };
 
-export const signUp = (data: any) => {
+export const signUp = (data: any): AxiosCall<UserLogged> => {
   const url = AUTH_BASE_PATH + AUTH_ROUTES.SIGN_UP;
   const Controller = loadAbort();
 
