@@ -13,7 +13,7 @@ public record RegisterRequest(
     string Email,
     [Required]
     string Password,
-    string Dni,
-    DateTime DateOfBirth,
+    string? Dni,
+    DateTime? DateOfBirth,
     string Gender
 );
