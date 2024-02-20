@@ -97,6 +97,7 @@ export const SignUpForm: FC = (): ReactElement => {
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
+                    className="dark:bg-[#38352E] border border-[#5D8966]"
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}

@@ -1,10 +1,19 @@
+'use client';
+
+import { redirect } from 'next/navigation';
 import type { FC, PropsWithChildren, ReactElement } from 'react';
 
 import { ModeToggle } from '@/components';
+import { useUserStore } from '@/hooks';
+import { AppRoutes } from '@/models';
 
 const MainLayout: FC<PropsWithChildren> = ({
   children,
 }: PropsWithChildren): ReactElement => {
+  const { user } = useUserStore();
+
+  if (!user?.token) redirect(AppRoutes.HOME);
+
   return (
     <div className="flex h-screen relative p-6">
       <div className="w-1/6">TODO: Sidebar</div>
