@@ -28,7 +28,10 @@ export const NavButtons: FC<NavButtonsProps> = ({
         <Button
           onClick={() => handleNav(ModalType.LOGIN)}
           className={cn(
-            buttonVariants({ variant: 'outline', className: 'text-white' }),
+            buttonVariants({
+              variant: 'outline',
+              className: 'text-black dark:text-white',
+            }),
             mobile && 'w-full'
           )}
         >

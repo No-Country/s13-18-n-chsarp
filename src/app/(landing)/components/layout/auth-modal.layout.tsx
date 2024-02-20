@@ -24,6 +24,7 @@ export const AuthModalLayout: FC<AuthModalLayoutProps> = ({
         className="
           max-h-[90dvh] min-w-[17rem] overflow-y-auto
           rounded-md sm:max-w-[51rem] lg:w-max w-10/12
+          border border-[#5D8966] dark:bg-[#38352E]
         "
       >
         {modalType === ModalTypeKeys.REGISTER ? <SignUpForm /> : <SignInForm />}

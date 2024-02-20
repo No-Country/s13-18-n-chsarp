@@ -21,7 +21,7 @@ export const EmailInput: FC<EmailInputProps> = ({
       <FormLabel className="text-[#5D8966]"> E-Mail : </FormLabel>
       <FormControl>
         <Input
-          className="h-[2.813rem]"
+          className="h-[2.813rem] border border-[#AAA]"
           placeholder="Ingresa tu E-mail"
           type="email"
           {...field}

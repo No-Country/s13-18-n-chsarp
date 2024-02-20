@@ -48,7 +48,7 @@ export const SignUpForm: FC = (): ReactElement => {
               <FormLabel className="text-[#5D8966]"> Nombre : </FormLabel>
               <FormControl>
                 <Input
-                  className="h-[2.813rem]"
+                  className="h-[2.813rem] border border-[#AAA]"
                   placeholder="Ingresa tu Nombre"
                   {...field}
                 />
@@ -82,7 +82,7 @@ export const SignUpForm: FC = (): ReactElement => {
                     <Button
                       variant={'outline'}
                       className={cn(
-                        'w-full pl-3 text-left font-normal h-[2.813rem]',
+                        'w-full pl-3 text-left font-normal h-[2.813rem] border border-[#AAA] dark:bg-[#38352E]',
                         !field.value && 'text-muted-foreground'
                       )}
                     >

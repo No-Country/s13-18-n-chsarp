@@ -41,7 +41,7 @@ export const PasswordInput: FC<PasswordInputProps> = ({
       </div>
       <FormControl>
         <Input
-          className="h-[2.813rem]"
+          className="h-[2.813rem] border border-[#AAA]"
           placeholder="Ingresa tu Contraseña"
           type={showPassword ? 'text' : 'password'}
           {...field}
