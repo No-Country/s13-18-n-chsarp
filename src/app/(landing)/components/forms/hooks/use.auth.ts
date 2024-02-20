@@ -2,20 +2,19 @@
 
 import { useCallback } from 'react';
 import { SubmitHandler } from 'react-hook-form';
-import { redirect } from 'next/navigation';
 
-import { AppRoutes, AxiosCall, UserLogged } from '@/models';
-import { useFetchAndLoad, useUserStore } from '@/hooks';
-import { createUserAdapter } from '../adapters';
-import { SignInSchema } from '../(routes)/sign-in/models';
-import { SignUpSchema } from '../(routes)/sign-up/models';
+import { useFetchAndLoad } from '@/hooks';
+import { AxiosCall, UserLogged } from '@/models';
+import { useUserActions } from '../hooks';
+import { SignInSchema } from '../sign-in/models';
+import { SignUpSchema } from '../sign-up/models';
 
 interface UseAuthProps {
   authFn: (data: any) => AxiosCall<UserLogged>;
 }
 
 export const useAuth = ({ authFn }: UseAuthProps) => {
-  const { setUser } = useUserStore();
+  const { saveUser } = useUserActions();
   const { loading, callEndpoint } = useFetchAndLoad();
 
   const handleAuth: SubmitHandler<SignInSchema | SignUpSchema> = useCallback(
@@ -23,12 +22,10 @@ export const useAuth = ({ authFn }: UseAuthProps) => {
       const response = await callEndpoint(authFn(values));
 
       if (response.data) {
-        const user = createUserAdapter(response.data);
-        setUser(user);
-        redirect(AppRoutes.CHAT);
+        saveUser(response.data);
       }
     },
-    [callEndpoint, setUser, authFn]
+    [callEndpoint, saveUser, authFn]
   );
 
   return { loading, handleAuth };

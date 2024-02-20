@@ -1,25 +1,39 @@
-import type { FC, ReactElement } from 'react';
-import Link from 'next/link';
+'use client';
 
-import { AppRoutes } from '@/models';
+import type { FC, ReactElement } from 'react';
+
+import { Button } from '@/components/ui';
+import { useModal } from '@/hooks';
+import { ModalType } from '@/models';
 import { AuthType, AuthTypeProps } from '../models';
 
 export const AccountParagraph: FC<AuthTypeProps> = ({
   authType,
 }: AuthTypeProps): ReactElement => {
+  const { onOpen, onClose } = useModal();
   const isRegister = authType === AuthType.register;
+
   const authText = (registerType: boolean) =>
     registerType ? 'Crea tu cuenta' : 'Inicia sesión';
+
+  const handleOpen = (modalType: ModalType) => {
+    onClose();
+    onOpen(modalType);
+  };
 
   return (
     <p>
       ¿{isRegister ? 'Ya' : 'No'} tienes una cuenta?{' '}
-      <Link
-        className="underline hover:text-[#5D8966] transition-colors"
-        href={isRegister ? AppRoutes.SIGN_IN : AppRoutes.SIGN_UP}
+      <Button
+        className="p-0 underline underline-offset-2 hover:text-[#5D8966] hover:no-underline transition-colors"
+        type="button"
+        variant="link"
+        onClick={() =>
+          handleOpen(!isRegister ? ModalType.REGISTER : ModalType.LOGIN)
+        }
       >
         {authText(!isRegister)}
-      </Link>
+      </Button>
     </p>
   );
 };
