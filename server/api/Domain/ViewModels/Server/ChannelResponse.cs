@@ -5,13 +5,9 @@ namespace Api.Domain.ViewModels.Server
 {
     public class ChannelResponse
     {
-        public DateTime Created_Date { get; set; }
-        public DateTime Init_Date { get; set; }
-        public DateTime Close_Date { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public DateTime Duration { get; set; }
-        public CHANNEL_STATE State { get; set; }
-        public CHANNEL_TYPE Type { get; set; }
-        public List<TopicVModel> Topics { get; set; } = new List<TopicVModel>();
+        public List<SessionResponse> Sessions { get; set; } = new List<SessionResponse>();
     }
 }
