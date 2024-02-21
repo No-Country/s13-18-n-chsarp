@@ -8,6 +8,7 @@ export enum ModalType {
   DELETE_CHANNEL = 'deleteChannel',
   EDIT_CHANNEL = 'editChannel',
   INVITE = 'invite',
+  EDIT_USER = 'editUser',
 }
 
 /**
@@ -27,4 +28,5 @@ export enum ModalTypeKeys {
   DELETE_CHANNEL = 'DELETE_CHANNEL',
   EDIT_CHANNEL = 'EDIT_CHANNEL',
   INVITE = 'INVITE',
+  EDIT_USER = 'EDIT_USER',
 }

@@ -14,7 +14,7 @@ interface AuthModalLayoutProps {
 export const AuthModalLayout: FC<AuthModalLayoutProps> = ({
   modalType,
 }: AuthModalLayoutProps): ReactElement => {
-  const { isModalOpen, handleClose } = useHandleModal({
+  const { data, isModalOpen, handleClose } = useHandleModal({
     modalType,
   });
 
