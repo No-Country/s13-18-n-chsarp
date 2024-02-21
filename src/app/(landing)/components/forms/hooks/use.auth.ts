@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 
 import { useFetchAndLoad } from '@/hooks';
-import { AxiosCall, UserLogged } from '@/models';
+import { AxiosCall, type UserLogged } from '@/models';
 import { useUserActions } from '../hooks';
 import { SignInSchema } from '../sign-in/models';
 import { SignUpSchema } from '../sign-up/models';
@@ -21,9 +21,7 @@ export const useAuth = ({ authFn }: UseAuthProps) => {
     async (values: any): Promise<void> => {
       const response = await callEndpoint(authFn(values));
 
-      if (response.data) {
-        saveUser(response.data);
-      }
+      if (response.data) saveUser(response.data);
     },
     [callEndpoint, saveUser, authFn]
   );

@@ -5,7 +5,7 @@ export const createUserAdapter = (data: any): UserLogged => ({
   token: data.jwt,
   user: {
     name: data.user.name,
-    //email: data.user.email,
+    email: data.email,
     //description: data.user.description,
     dateOfBirth: data.user.dateOfBirth,
     gender: data.user.gender,
