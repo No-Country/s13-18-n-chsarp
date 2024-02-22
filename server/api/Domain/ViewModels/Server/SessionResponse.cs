@@ -1,14 +1,14 @@
-﻿using Api.Domain.Enums.Channel;
+﻿using Api.Domain.Entities;
+using Api.Domain.Enums.Channel;
 
-namespace Api.Domain.Entities
+namespace Api.Domain.ViewModels.Server
 {
-    public class Session
+    public class SessionResponse
     {
         public int Id { get; set; }
         public int ChannelId { get; set; }
-        public Channel Channel { get; set; }
-        public string Name { get; set; }
-        public List<Message> Messages { get; set; } = new List<Message>();
+        public string Name { get; set; } = string.Empty;
+        public List<MessageVModel> Messages { get; set; } = new List<MessageVModel>();
         public string ModeratorName { get; set; } = string.Empty;
         public DateTime Created_Date { get; set; }
         public DateTime? Init_Date { get; set; }

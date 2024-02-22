@@ -1,8 +1,14 @@
+using Api.Bll;
+using Api.Controllers.Hubs;
 using Api.Dal;
 using Api.Dal.Auth;
 using Api.Dal.Auth.Seeds;
+using Api.Dal.Server;
 using Api.Domain.Entities;
+using Api.Domain.HubModels;
+using Api.Domain.Interfaces.Bll;
 using Api.Domain.Interfaces.Dal;
+using Api.Domain.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +25,20 @@ var connectionString = builder
 builder.Services
     .AddScoped<IAuthenticationRepository, AuthenticationRepository>()
     .AddDbContext<Context>(options => options.UseSqlServer(connectionString));
+
+builder.Services.AddAutoMapper(typeof(AutomapperProfile));
+
+// Add SignalR
+builder.Services.AddSignalR();
+builder.Services.AddSingleton<SharedDB>();
+
+// Dependency inyection
+
+builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+builder.Services.AddScoped<ISessionService, SessionService>();
+
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+builder.Services.AddScoped<IMessageService, MessageService>();
 
 #region Auth  
 //TODO needs refactor
@@ -75,9 +95,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(policyBuilder =>
     policyBuilder.AddDefaultPolicy(policy =>
         policy
-            .WithOrigins("*")
+            .WithOrigins("https://contanos.vercel.app", "http://localhost:3000")
             .AllowAnyHeader()
             .AllowAnyMethod()
+            .AllowCredentials()
             )
 );
 
@@ -97,7 +118,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-
+app.MapHub<ChatHub>("/chat");
 
 // Adding seed
 //TODO refactor 

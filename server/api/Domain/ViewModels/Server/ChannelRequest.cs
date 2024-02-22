@@ -5,9 +5,7 @@ namespace Api.Domain.ViewModels.Server
 {
     public class ChannelRequest
     {
+        public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public CHANNEL_STATE State { get; set; }
-        public CHANNEL_TYPE Type { get; set; }
-        public List<TopicVModel> Topics { get; set; } = new List<TopicVModel>();
     }
 }
