@@ -1,5 +1,5 @@
 ﻿using Api.Domain.Entities;
-using Api.Domain.Enums;
+using Api.Domain.Enums.Channel;
 using Api.Domain.Interfaces.Dal;
 using Api.Domain.ViewModels.Server;
 using AutoMapper;
@@ -84,7 +84,7 @@ namespace Api.Dal.Server
             {
                 var session = await _context.Sessions
                     .Where(s => s.Id == id)
-                    .Where(s => s.State != Domain.Enums.CHANNEL_STATE.FINISHED)
+                    .Where(s => s.State != CHANNEL_STATE.FINISHED)
                     .Include(s => s.Messages)
                     .FirstOrDefaultAsync();
                 return _mapper.Map<SessionResponse>(session);

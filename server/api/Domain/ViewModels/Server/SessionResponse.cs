@@ -1,5 +1,5 @@
 ﻿using Api.Domain.Entities;
-using Api.Domain.Enums;
+using Api.Domain.Enums.Channel;
 
 namespace Api.Domain.ViewModels.Server
 {

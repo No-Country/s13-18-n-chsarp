@@ -1,4 +1,4 @@
-﻿namespace Api.Domain.Enums
+﻿namespace Api.Domain.Enums.Channel
 {
     public enum CHANNEL_TYPE
     {
@@ -7,4 +7,3 @@
         AUDIO
     }
 }
-    

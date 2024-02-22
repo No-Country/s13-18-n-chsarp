@@ -1,4 +1,4 @@
-﻿using Api.Domain.Enums;
+﻿using Api.Domain.Enums.Channel;
 
 namespace Api.Domain.Entities
 {
