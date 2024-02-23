@@ -1,4 +1,4 @@
-﻿using Api.Domain.ViewModels.Server;
+using Api.Domain.ViewModels.Server;
 
 namespace Api.Domain.Interfaces.Bll
 {

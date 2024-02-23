@@ -1,4 +1,4 @@
-﻿using Api.Domain.Entities;
+using Api.Domain.Entities;
 using Api.Domain.Interfaces.Bll;
 using Api.Domain.ViewModels.Server;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
