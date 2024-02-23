@@ -8,7 +8,7 @@ namespace Api.Domain.Interfaces.Bll
 
         Task<SessionResponse> UpdateSession(int id, SessionRequest updateSession);
 
-        Task<bool> DeleteSession(int id);
+        Task<bool> CloseSession(int id);
 
         Task<SessionResponse> GetSessionById(int id);
 

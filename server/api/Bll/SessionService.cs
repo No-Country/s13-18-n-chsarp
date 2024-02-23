@@ -37,9 +37,9 @@ namespace Api.Bll
             return newsession;
         }
 
-        public Task<bool> DeleteSession(int id)
+        public async Task<bool> CloseSession(int id)
         {
-            throw new NotImplementedException();
+            return await _sessionRepository.Close(id);
         }
 
         public async Task<IEnumerable<SessionResponse>> GetAllSessions()

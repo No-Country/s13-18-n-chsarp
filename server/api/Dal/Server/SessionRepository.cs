@@ -60,9 +60,21 @@ namespace Api.Dal.Server
             }
         }
 
-        public Task<bool> Delete(int id)
+        public async Task<bool> Close(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var session = await _context.Sessions.Where(s => s.Id == id).FirstOrDefaultAsync();
+                if (session != null)
+                {
+                    session.State = CHANNEL_STATE.FINISHED;
+                    _context.Update(session);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch { return false; }
         }
 
         public async Task<IQueryable<Session>> GetAll()

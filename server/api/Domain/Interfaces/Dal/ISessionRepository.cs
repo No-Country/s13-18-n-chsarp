@@ -9,7 +9,7 @@ namespace Api.Domain.Interfaces.Dal
 
         Task<SessionResponse> Update(int id, SessionRequest updateSession);
 
-        Task<bool> Delete(int id);
+        Task<bool> Close(int id);
 
         Task<SessionResponse> GetById(int id);
 

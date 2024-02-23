@@ -16,5 +16,6 @@ namespace Api.Domain.Entities
         public TimeSpan? Duration { get; set; }
         public CHANNEL_STATE State { get; set; }
         public CHANNEL_TYPE Type { get; set; }
+        public List<ConnectionUser> connectionUsers { get; set; } = new List<ConnectionUser>();
     }
 }
