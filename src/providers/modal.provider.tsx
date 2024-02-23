@@ -3,6 +3,7 @@
 import type { FC, ReactElement } from 'react';
 
 import { LoginModal, RegisterModal } from '@/app/(landing)/components/modals';
+import { MentorReviewModal } from '@/app/test/components/modals';
 import { useMounted } from '@/hooks';
 
 export const ModalProvider: FC = (): ReactElement | null => {
@@ -12,6 +13,7 @@ export const ModalProvider: FC = (): ReactElement | null => {
     <>
       <LoginModal />
       <RegisterModal />
+      <MentorReviewModal />
     </>
   );
 };
