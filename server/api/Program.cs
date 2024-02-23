@@ -40,6 +40,8 @@ builder.Services.AddScoped<ISessionService, SessionService>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 
+builder.Services.AddScoped<ChannelService>();
+
 #region Auth  
 //TODO needs refactor
 builder.Services.AddIdentity<User, IdentityRole>(options =>

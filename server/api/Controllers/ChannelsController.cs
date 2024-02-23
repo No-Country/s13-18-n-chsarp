@@ -1,37 +1,50 @@
-﻿using Api.Domain.ViewModels.Server;
+﻿using Api.Bll;
+using Api.Domain.Entities;
+using Api.Domain.ViewModels.Server;
 using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ChannelsController : ControllerBase
+    public class ChannelsController (ChannelService _service) : ControllerBase
     {
+        [HttpPost]
+        //[Authorize(Roles=Role.Moderator)]
+        [ProducesResponseType(typeof(ChannelCreatedResponse), StatusCodes.Status201Created)]
+        public async Task<ActionResult<ChannelCreatedResponse>> RegisterChannel([FromBody] ChannelRequest request)
+        {
+            //Empty cuando no viene autentiado para debug
+            var user = HttpContext.User.FindFirst("mail")?.Value??String.Empty;
+            var result  = await _service.CreateChannelAsync(request,user);
+            return  result
+                .Result?CreatedAtAction(nameof(Get),new { channelName = result.Data.Name},  result):BadRequest(result);
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ChannelResponse>>> GetAll()
         {
-            return Ok(new List<ChannelResponse>());
+            return Ok(await _service.GetAll());
         }
 
-        [HttpPost]
-        public async Task<ActionResult> RegisterChannel([FromBody] ChannelRequest request)
+
+        [HttpGet("{channelName}")]
+        public async Task<ActionResult<ChannelResponse>> Get(string channelName)
         {
-            return Ok();
+            var channel = await _service.GetByNameAsync(channelName);
+            return  channel!=null?Ok(channel):NotFound(); 
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<ChannelResponse>> Get(int id)
-        {
-            return Ok(new ChannelResponse());
-        }
-
+        [Obsolete]
         [HttpPatch("{id:int}")]
         public async Task<ActionResult<ChannelResponse>> Patch(int id, [FromBody] JsonPatchDocument patchDoc)
         {
             return Ok(new ChannelResponse());
         }
 
+        [Obsolete]
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {

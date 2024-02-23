@@ -1,3 +1,4 @@
+using Api.Dal.Server.Seeds;
 using Api.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -9,10 +10,13 @@ public class Context : IdentityDbContext<User>
     public Context(DbContextOptions<Context> options) : base(options)
     {
         Database.EnsureCreated();
+        
+        Database.Migrate();
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        ChannelSeeds.Seed(builder);
        base.OnModelCreating(builder);
     }
 

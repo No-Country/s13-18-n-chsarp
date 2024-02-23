@@ -11,6 +11,11 @@ namespace Api.Domain.Utilities
             CreateMap<Session, SessionResponse>().IncludeAllDerived();
 
             CreateMap<Message, MessageVModel>();
+
+            CreateMap<Channel, ChannelResponse>().IncludeAllDerived();
+            CreateMap<Channel, ChannelCreateRequest>().IncludeAllDerived();
+            CreateMap<ChannelCreateRequest, Channel>().IncludeAllDerived();
+            CreateMap<ChannelRequest, Channel>().IncludeAllDerived();
         }
     }
 }
