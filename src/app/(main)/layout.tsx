@@ -1,11 +1,9 @@
 'use client';
 
-import { redirect } from 'next/navigation';
 import type { FC, PropsWithChildren, ReactElement } from 'react';
 
 import { ModeToggle } from '@/components';
 import { useUserStore } from '@/hooks';
-import { AppRoutes } from '@/models';
 import { Sidebar } from './components';
 
 const MainLayout: FC<PropsWithChildren> = ({
@@ -13,7 +11,7 @@ const MainLayout: FC<PropsWithChildren> = ({
 }: PropsWithChildren): ReactElement => {
   const { user } = useUserStore();
 
-  if (!user?.token) redirect(AppRoutes.HOME);
+  // if (!user?.token) redirect(AppRoutes.HOME);
 
   return (
     <div className="flex gap-[30px] h-screen relative p-6">
