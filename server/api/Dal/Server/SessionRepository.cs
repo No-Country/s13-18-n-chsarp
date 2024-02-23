@@ -17,7 +17,7 @@ namespace Api.Dal.Server
             _context = context;
             _mapper = mapper;
         }
-        public async Task<SessionResponse> Create(SessionRequest newSession)
+        public async Task<SessionResponse> Create(SessionRequest newSession, string name)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace Api.Dal.Server
                     ChannelId = newSession.ChannelId,
                     Name = newSession.Name,
                     Messages = new List<Message>(),
-                    ModeratorName = newSession.ModeratorName,
+                    ModeratorName = name,
                     Created_Date = DateTime.Now,
                     Init_Date = newSession.Init_Date,
                     Close_Date = newSession.Close_Date,

@@ -4,7 +4,7 @@ namespace Api.Domain.Interfaces.Bll
 {
     public interface ISessionService
     {
-        Task<SessionResponse> CreateSession(SessionRequest session);
+        Task<SessionResponse> CreateSession(SessionRequest session, string name);
 
         Task<SessionResponse> UpdateSession(int id, SessionRequest updateSession);
 
