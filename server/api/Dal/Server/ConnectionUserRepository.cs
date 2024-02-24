@@ -20,10 +20,10 @@ namespace Api.Dal.Server
             try
             {
 
-            var conn = _mapper.Map<ConnectionUser>(connUser);
-            _context.Add(conn);
-            await _context.SaveChangesAsync();
-            return true;
+                var conn = _mapper.Map<ConnectionUser>(connUser);
+                _context.Add(conn);
+                await _context.SaveChangesAsync();
+                return true;
             }
             catch (Exception ex)
             {

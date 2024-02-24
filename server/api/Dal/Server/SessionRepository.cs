@@ -21,12 +21,12 @@ namespace Api.Dal.Server
         {
             try
             {
-                TimeSpan? dur = (newSession.Close_Date != null && newSession.Init_Date != null) 
-                    ? (newSession.Close_Date - newSession.Init_Date) 
+                TimeSpan? dur = (newSession.Close_Date != null && newSession.Init_Date != null)
+                    ? (newSession.Close_Date - newSession.Init_Date)
                     : null;
                 var session = new Session()
                 {
-                    Id=0,
+                    Id = 0,
                     ChannelId = newSession.ChannelId,
                     Name = newSession.Name,
                     Messages = new List<Message>(),
@@ -46,12 +46,12 @@ namespace Api.Dal.Server
                     Id = session.Id,
                     ChannelId = session.ChannelId,
                     Messages = new List<MessageVModel>(),
-                    ModeratorName =session.ModeratorName,
+                    ModeratorName = session.ModeratorName,
                     Created_Date = session.Created_Date,
                     Init_Date = session.Init_Date,
                     Duration = session.Duration,
                     State = session.State,
-                    Type = session.Type    
+                    Type = session.Type
                 };
             }
             catch (Exception ex)
@@ -101,7 +101,7 @@ namespace Api.Dal.Server
                     .FirstOrDefaultAsync();
                 return _mapper.Map<SessionResponse>(session);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw;
             }

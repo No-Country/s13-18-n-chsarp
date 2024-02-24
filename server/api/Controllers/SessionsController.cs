@@ -21,9 +21,9 @@ namespace Api.Controllers
         [HttpPost]
         public async Task<ActionResult> RegisterSession([FromBody] SessionRequest request)
         {
-            var name = HttpContext.User.Claims.Where(c => c.Type == "Name").FirstOrDefault().Value;            
+            var name = HttpContext.User.Claims.Where(c => c.Type == "Name").FirstOrDefault().Value;
             var session = await _sessionService.CreateSession(request, name);
-            return Ok();
+            return Created();
         }
 
         [HttpGet]

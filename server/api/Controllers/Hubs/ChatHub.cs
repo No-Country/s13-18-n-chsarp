@@ -105,10 +105,10 @@ namespace Api.Controllers.Hubs
             {
                 await Clients.Group(connection.ChatRoom)
                     .SendAsync("ReceiveSpecificMessage", "ADMIN", $"{connection.UserName} cerró la sesión de la sala: {connection.ChatRoom}");
-                var users= await _connectionUserService.GetAllBySessionId(connection.SessionId);
+                var users = await _connectionUserService.GetAllBySessionId(connection.SessionId);
                 if (users != null)
                 {
-                foreach (var user in users)
+                    foreach (var user in users)
                     {
                         await Groups.RemoveFromGroupAsync(user.ConnectionId, connection.ChatRoom);
                         await _connectionUserService.Delete(user.ConnectionId);

@@ -29,9 +29,9 @@ namespace Api.Bll
         {
             try
             {
-            var query = await _connectionUserRepository.GetAll();
-            var list = await query.Where(c => c.SessionId == id).ToListAsync();
-            return _mapper.Map<IEnumerable<ConnectionUserDTO>>(list);
+                var query = await _connectionUserRepository.GetAll();
+                var list = await query.Where(c => c.SessionId == id).ToListAsync();
+                return _mapper.Map<IEnumerable<ConnectionUserDTO>>(list);
             }
             catch (Exception ex)
             {
