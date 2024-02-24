@@ -17,8 +17,8 @@ export const Nav: FC = (): ReactElement => {
   const handleClose = () => setModalIsOpen(false);
 
   return (
-    <nav className={cn(modalIsOpen && 'h-screen flex flex-col bg-background')}>
-      <div className="flex justify-between items-center py-3 px-6 border-b-2">
+    <nav className={cn(modalIsOpen && 'h-full flex flex-col bg-background')}>
+      <div className="flex justify-between items-center py-3 px-6">
         <h1 className="font-bold">
           <Link onClick={() => setModalIsOpen(false)} href={AppRoutes.HOME}>
             <Image
@@ -29,20 +29,21 @@ export const Nav: FC = (): ReactElement => {
             />
           </Link>
         </h1>
-        <div className="flex gap-x-4 max-md:hidden">
-          <NavButtons handleClose={handleClose} />
+        <div className="flex justify-between items-center gap-x-4">
+          <div className="flex gap-x-4 max-md:hidden">
+            <NavButtons handleClose={handleClose} />
+          </div>
           <ModeToggle />
+          <Button
+            className="md:hidden"
+            variant="outline"
+            size="icon"
+            onClick={() => setModalIsOpen((prevState) => !prevState)}
+          >
+            {!modalIsOpen && <Menu className="h-[1.2rem] w-[1.2rem]" />}
+            {modalIsOpen && <X className="h-[1.2rem] w-[1.2rem]" />}
+          </Button>
         </div>
-
-        <Button
-          className="md:hidden"
-          variant="outline"
-          size="icon"
-          onClick={() => setModalIsOpen((prevState) => !prevState)}
-        >
-          {!modalIsOpen && <Menu className="h-[1.2rem] w-[1.2rem]" />}
-          {modalIsOpen && <X className="h-[1.2rem] w-[1.2rem]" />}
-        </Button>
       </div>
       {modalIsOpen && !isBigScreen && <NavModal handleClose={handleClose} />}
     </nav>
