@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import type { FC, ReactElement, PropsWithChildren } from 'react';
+import { Lato } from 'next/font/google';
+
+const lato = Lato({ subsets: ['latin'], weight: ['400', '700', '900'] });
 
 import { GlobalProviders } from '@/providers';
 import './globals.css';
@@ -14,7 +17,7 @@ const RootLayout: FC<PropsWithChildren> = ({
 }: PropsWithChildren): ReactElement => {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body>
+      <body className={lato.className}>
         <GlobalProviders>{children}</GlobalProviders>
       </body>
     </html>
