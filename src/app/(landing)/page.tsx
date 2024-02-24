@@ -24,7 +24,7 @@ const LandingPage: FC = (): ReactElement => {
               className={cn(
                 buttonVariants({
                   className:
-                    'text-white dark:text-white bg-[#5D8966] shadow-3xl',
+                    'text-white dark:text-white bg-[#5D8966] hover:bg-[#5D8966]/70 shadow-3xl',
                   size: 'lg',
                   variant: 'default',
                 })
@@ -36,7 +36,7 @@ const LandingPage: FC = (): ReactElement => {
               className={cn(
                 buttonVariants({
                   className:
-                    'text-white dark:text-white bg-[#263238] shadow-3xl',
+                    'text-white dark:text-white bg-[#263238] hover:bg-[#263238]/70 shadow-3xl',
                   size: 'lg',
                   variant: 'default',
                 })
