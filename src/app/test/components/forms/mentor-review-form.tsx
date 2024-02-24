@@ -20,10 +20,10 @@ const FormSchema = z.object({
   bio: z
     .string()
     .min(10, {
-      message: 'Bio must be at least 10 characters.',
+      message: 'El comentario debe tener al menos 10 caracteres.',
     })
     .max(160, {
-      message: 'Bio must not be longer than 30 characters.',
+      message: 'El comentario no debe superar los 160 caracteres',
     }),
 });
 

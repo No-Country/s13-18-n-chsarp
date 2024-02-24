@@ -14,7 +14,7 @@ export const NoChat = () => {
           width={911}
           height={421}
           className="mt-12"
-        ></Image>
+        />
       </div>
     </div>
   );

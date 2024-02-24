@@ -8,6 +8,7 @@ import { ModeToggle } from '@/components';
 import { Button } from '@/components/ui';
 import { cn } from '@/lib';
 import { AppRoutes } from '@/models';
+import Image from 'next/image';
 import { useNav } from '../../hooks';
 import { NavButtons, NavModal } from './nav_items';
 
@@ -20,7 +21,12 @@ export const Nav: FC = (): ReactElement => {
       <div className="flex justify-between items-center py-3 px-6 border-b-2">
         <h1 className="font-bold">
           <Link onClick={() => setModalIsOpen(false)} href={AppRoutes.HOME}>
-            ConTAnoS
+            <Image
+              src="/images/logo.svg"
+              alt="no chat image"
+              width={192}
+              height={39}
+            />
           </Link>
         </h1>
         <div className="flex gap-x-4 max-md:hidden">

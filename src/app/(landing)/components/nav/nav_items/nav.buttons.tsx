@@ -29,21 +29,25 @@ export const NavButtons: FC<NavButtonsProps> = ({
           onClick={() => handleNav(ModalType.LOGIN)}
           className={cn(
             buttonVariants({
-              variant: 'outline',
-              className: 'text-black dark:text-white',
+              className:
+                'bg-gradient-to-br from-green-400 to-teal-400 dark:text-white dark:text-white',
             }),
             mobile && 'w-full'
           )}
         >
-          Ingreso
+          Inicia sesión
         </Button>
       </li>
       <li>
         <Button
           onClick={() => handleNav(ModalType.REGISTER)}
-          className={cn(buttonVariants(), mobile && 'w-full')}
+          className={cn(
+            buttonVariants(),
+            mobile && 'w-full',
+            'bg-gradient-to-br from-green-700 via-green-800 to-teal-700 dark:text-white'
+          )}
         >
-          Registro
+          Registrate
         </Button>
       </li>
     </ul>
