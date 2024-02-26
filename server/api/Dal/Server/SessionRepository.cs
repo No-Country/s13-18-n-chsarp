@@ -17,20 +17,20 @@ namespace Api.Dal.Server
             _context = context;
             _mapper = mapper;
         }
-        public async Task<SessionResponse> Create(SessionRequest newSession)
+        public async Task<SessionResponse> Create(SessionRequest newSession, string name)
         {
             try
             {
-                TimeSpan? dur = (newSession.Close_Date != null && newSession.Init_Date != null) 
-                    ? (newSession.Close_Date - newSession.Init_Date) 
+                TimeSpan? dur = (newSession.Close_Date != null && newSession.Init_Date != null)
+                    ? (newSession.Close_Date - newSession.Init_Date)
                     : null;
                 var session = new Session()
                 {
-                    Id=0,
+                    Id = 0,
                     ChannelId = newSession.ChannelId,
                     Name = newSession.Name,
                     Messages = new List<Message>(),
-                    ModeratorName = newSession.ModeratorName,
+                    ModeratorName = name,
                     Created_Date = DateTime.Now,
                     Init_Date = newSession.Init_Date,
                     Close_Date = newSession.Close_Date,
@@ -46,12 +46,12 @@ namespace Api.Dal.Server
                     Id = session.Id,
                     ChannelId = session.ChannelId,
                     Messages = new List<MessageVModel>(),
-                    ModeratorName =session.ModeratorName,
+                    ModeratorName = session.ModeratorName,
                     Created_Date = session.Created_Date,
                     Init_Date = session.Init_Date,
                     Duration = session.Duration,
                     State = session.State,
-                    Type = session.Type    
+                    Type = session.Type
                 };
             }
             catch (Exception ex)
@@ -60,9 +60,21 @@ namespace Api.Dal.Server
             }
         }
 
-        public Task<bool> Delete(int id)
+        public async Task<bool> Close(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var session = await _context.Sessions.Where(s => s.Id == id).FirstOrDefaultAsync();
+                if (session != null)
+                {
+                    session.State = CHANNEL_STATE.FINISHED;
+                    _context.Update(session);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch { return false; }
         }
 
         public async Task<IQueryable<Session>> GetAll()
@@ -89,7 +101,7 @@ namespace Api.Dal.Server
                     .FirstOrDefaultAsync();
                 return _mapper.Map<SessionResponse>(session);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw;
             }

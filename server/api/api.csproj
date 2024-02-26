@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Folder Include="Domain\Interfaces\Api\" />
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

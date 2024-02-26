@@ -1,5 +1,8 @@
-﻿using Api.Domain.Interfaces.Bll;
+using Api.Domain.Entities;
+using Api.Domain.Interfaces.Bll;
 using Api.Domain.ViewModels.Server;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -14,11 +17,13 @@ namespace Api.Controllers
             _sessionService = sessionService;
         }
 
+        [Authorize(Roles = Role.Moderator)]
         [HttpPost]
         public async Task<ActionResult> RegisterSession([FromBody] SessionRequest request)
         {
-            var session = await _sessionService.CreateSession(request);
-            return Ok();
+            var name = HttpContext.User.Claims.Where(c => c.Type == "Name").FirstOrDefault().Value;
+            var session = await _sessionService.CreateSession(request, name);
+            return Created();
         }
 
         [HttpGet]
