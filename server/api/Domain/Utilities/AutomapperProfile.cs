@@ -1,4 +1,5 @@
-﻿using Api.Domain.Entities;
+﻿using Api.Domain.Dto;
+using Api.Domain.Entities;
 using Api.Domain.ViewModels.Server;
 using AutoMapper;
 
@@ -11,6 +12,8 @@ namespace Api.Domain.Utilities
             CreateMap<Session, SessionResponse>().IncludeAllDerived();
 
             CreateMap<Message, MessageVModel>();
+
+            CreateMap<ConnectionUser, ConnectionUserDTO>().ReverseMap();
         }
     }
 }

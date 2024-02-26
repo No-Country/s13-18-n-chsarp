@@ -5,11 +5,11 @@ namespace Api.Domain.Interfaces.Dal
 {
     public interface ISessionRepository
     {
-        Task<SessionResponse> Create(SessionRequest newSession);
+        Task<SessionResponse> Create(SessionRequest newSession, string name);
 
         Task<SessionResponse> Update(int id, SessionRequest updateSession);
 
-        Task<bool> Delete(int id);
+        Task<bool> Close(int id);
 
         Task<SessionResponse> GetById(int id);
 

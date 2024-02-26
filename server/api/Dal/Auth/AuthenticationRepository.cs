@@ -68,7 +68,9 @@ public class AuthenticationRepository : IAuthenticationRepository
         {
             new("Name", user.Name),
             new("Email", user.Email),
-            new("Id", user.Id)
+            new("Id", user.Id),
+            new("UserName", user.UserName),
+            new("IsVerified", user.IsVerified.ToString())
         };
 
         var userRoles = await _userManager.GetRolesAsync(user);
