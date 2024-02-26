@@ -13,6 +13,10 @@ namespace Api.Domain.Utilities
 
             CreateMap<Message, MessageVModel>();
 
+            CreateMap<Channel, ChannelResponse>().IncludeAllDerived();
+            CreateMap<Channel, ChannelCreateRequest>().IncludeAllDerived();
+            CreateMap<ChannelCreateRequest, Channel>().IncludeAllDerived();
+            CreateMap<ChannelRequest, Channel>().IncludeAllDerived();
             CreateMap<ConnectionUser, ConnectionUserDTO>().ReverseMap();
         }
     }

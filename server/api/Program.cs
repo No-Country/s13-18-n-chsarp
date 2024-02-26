@@ -41,6 +41,8 @@ builder.Services.AddScoped<ISessionService, SessionService>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 
+builder.Services.AddScoped<ChannelService>();
+
 builder.Services.AddScoped<IConnectionUserRepository, ConnectionUserRepository>();
 builder.Services.AddScoped<IConnectionUserService, ConnectionUserService>();
 
