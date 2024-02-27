@@ -1,4 +1,5 @@
 ﻿using Api.Domain.Dto;
+using Api.Domain.Entities;
 using Api.Domain.HubModels;
 using Api.Domain.Interfaces.Bll;
 using Api.Domain.ViewModels.Server;
@@ -94,6 +95,7 @@ namespace Api.Controllers.Hubs
                 };
                 await _messageService.Create(msg);
                 await _connectionUserService.Delete(Context.ConnectionId);
+                _shared.connections.Remove(Context.ConnectionId, out UserConnection connection1);
             }
             catch (Exception ex)
             {

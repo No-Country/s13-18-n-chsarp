@@ -5,6 +5,7 @@ namespace Api.Domain.ViewModels.Server
 {
     public class ChannelResponse
     {
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string? LogoUrl { get; set; }
         public string? LogoIcon { get; set; }

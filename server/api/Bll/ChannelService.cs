@@ -68,7 +68,10 @@ namespace Api.Bll
             var query = _context.Channels.AsQueryable();
             //TODO aplicar filtro
 
-            return  _mapper.Map<List<ChannelResponse>>(await query.ToListAsync());
+            return  _mapper.Map<List<ChannelResponse>>(
+                await query
+                .Include(c=>c.Sessions.Where(s=>s.State != Domain.Enums.Channel.CHANNEL_STATE.FINISHED))
+                .ToListAsync());
         }
 
         public async Task<ChannelResponse?> GetByNameAsync(string channelName)
