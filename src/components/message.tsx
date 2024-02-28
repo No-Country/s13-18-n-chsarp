@@ -2,14 +2,13 @@ import { cn } from '@/lib';
 
 interface Props {
   prevUser: string | null;
-  user: string;
-  content: string;
-  id: string;
+  userName: string;
+  msg: string;
 }
 
-export const Message = ({ prevUser, user, content, id }: Props) => {
-  const isLoggedUser = '1' === user;
-  const isSameAsPreviousUser = user === prevUser;
+export const Message = ({ prevUser, userName, msg }: Props) => {
+  const isLoggedUser = 'moderadorr@app.com' === userName;
+  const isSameAsPreviousUser = userName === prevUser;
 
   return (
     <div
@@ -22,9 +21,9 @@ export const Message = ({ prevUser, user, content, id }: Props) => {
       )}
     >
       {!isSameAsPreviousUser && !isLoggedUser && (
-        <p className="font-medium">User {user}</p>
+        <p className="font-medium">{userName}</p>
       )}
-      <p>{content}</p>
+      <p>{msg}</p>
     </div>
   );
 };
