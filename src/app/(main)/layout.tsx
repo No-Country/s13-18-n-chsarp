@@ -1,11 +1,10 @@
 'use client';
-
-import { redirect } from 'next/navigation';
 import type { FC, PropsWithChildren, ReactElement } from 'react';
 
 import { ModeToggle } from '@/components';
 import { useUserStore } from '@/hooks';
 import { AppRoutes } from '@/models';
+import { redirect } from 'next/navigation';
 import { Sidebar } from './components';
 
 const MainLayout: FC<PropsWithChildren> = ({

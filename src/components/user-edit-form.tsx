@@ -8,7 +8,6 @@ import {
     Button,
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -45,19 +44,16 @@ export const UserEditForm: FC = (): ReactElement => {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-[55px]">
                 <FormField
                     control={form.control}
                     name="name"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Nombre</FormLabel>
+                            <FormLabel className='text-lg'>Nombre</FormLabel>
                             <FormControl>
-                                <Input placeholder="Nombre Apellido" {...field} />
+                                <Input placeholder="Nombre Apellido" {...field} className='border-[#9EC79B] border-b-[3px] border-t-0 border-x-0 rounded-none placeholder:font-light placeholder:text-white placeholder:italic focus-visible:ring-0' />
                             </FormControl>
-                            <FormDescription>
-                                Este es tu nombre.
-                            </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
@@ -67,13 +63,10 @@ export const UserEditForm: FC = (): ReactElement => {
                     name="username"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Nombre de usuario</FormLabel>
+                            <FormLabel className='text-lg'>Nombre de usuario</FormLabel>
                             <FormControl>
-                                <Input placeholder="usuario123" {...field} />
+                                <Input placeholder="usuario123" {...field} className='border-[#9EC79B] border-b-[3px] border-t-0 border-x-0 rounded-none placeholder:font-light placeholder:text-white placeholder:italic focus-visible:ring-0' />
                             </FormControl>
-                            <FormDescription>
-                                Este es tu nombre de usuario.
-                            </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
@@ -83,18 +76,15 @@ export const UserEditForm: FC = (): ReactElement => {
                     name="socialNetwork"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Redes sociales</FormLabel>
+                            <FormLabel className='text-lg'>Redes sociales</FormLabel>
                             <FormControl>
-                                <Input placeholder="usuario20" {...field} />
+                                <Input placeholder="Facebook, Instagram, X" {...field} className='border-[#9EC79B] border-b-[3px] border-t-0 border-x-0 rounded-none placeholder:font-light placeholder:text-white placeholder:italic focus-visible:ring-0' />
                             </FormControl>
-                            <FormDescription>
-                                Esta es tu cuenta de instagram.
-                            </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Guardar</Button>
+                <Button variant="default" className="self-end text-[22px] bg-[#FCD07F80] font-normal rounded-full px-[24px] hover:bg-transparent">Guardar</Button>
             </form>
         </Form>
     )
