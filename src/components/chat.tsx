@@ -1,27 +1,83 @@
 'use client';
 
+import { useFetchAndLoad } from '@/hooks';
+import { Axios } from '@/lib';
+import { AxiosCall, Session } from '@/models';
+import { loadAbort } from '@/utils';
 import {
   HubConnection,
   HubConnectionBuilder,
   LogLevel,
 } from '@microsoft/signalr';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ChatHeader } from './chat-header';
 import { ChatInput } from './chat-input';
 import { MessageList } from './message-list';
 
-interface Message {
+// chat-api.model
+const SESSIONS_BASE_PATH = '/Sessions';
+
+// model
+export interface Message {
   userName: string;
-  msg: string;
+  text: string;
+}
+export interface ChatProps {
+  id: string;
+}
+export interface useChatProps extends ChatProps {}
+
+export interface useSessionProps {
+  sessionFn: (params: any) => AxiosCall<Session>;
+  setMessages: (messages: Message[]) => void;
 }
 
-export const Chat = () => {
+// chat.service.ts
+export const getSession = (params: any): AxiosCall<Session> => {
+  const url = SESSIONS_BASE_PATH + params;
+  const Controller = loadAbort();
+
+  return {
+    call: Axios.get(url),
+    controller: Controller,
+  };
+};
+
+// use.session.ts
+export const useSession = ({ sessionFn, setMessages }: useSessionProps) => {
+  const { loading, callEndpoint } = useFetchAndLoad();
+
+  const handleGetSessionMessages = useCallback(
+    async (param: any): Promise<void> => {
+      const response = await callEndpoint(sessionFn(param));
+
+      if (response.data) setMessages(response.data.messages);
+    },
+    [callEndpoint, sessionFn]
+  );
+
+  return { loading, handleGetSessionMessages };
+};
+
+// use.chat.ts
+export const useChat = ({ id }: useChatProps) => {
   const [connection, setConnection] = useState<HubConnection | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [messagesAreLoading, setMessagesAreLoading] = useState(true);
   const [chatIsLoading, setChatIsLoading] = useState(true);
 
-  useEffect(() => {}, []);
+  const { handleGetSessionMessages } = useSession({
+    sessionFn: getSession,
+    setMessages,
+  });
+
+  useEffect(() => {
+    (async () => {
+      await handleGetSessionMessages('/' + id);
+
+      setMessagesAreLoading(false);
+    })();
+  }, []);
 
   useEffect(() => {
     if (!messagesAreLoading) {
@@ -32,19 +88,12 @@ export const Chat = () => {
           .build();
 
         newConnection.on('JoinSpecificChatRoom', (userName, msg) => {
-          setMessages((messages) => [...messages, { userName, msg }]);
+          setMessages((messages) => [...messages, { userName, text: msg }]);
         });
 
         newConnection.on('ReceiveSpecificMessage', (userName, msg) => {
-          setMessages((messages) => [...messages, { userName, msg }]);
+          setMessages((messages) => [...messages, { userName, text: msg }]);
         });
-
-        //  newConnection.start().then(() => setConnection(newConnection));
-        // await newConnection.invoke('JoinSpecificChatRoom', {
-        //   userName: 'moderadorr@app.com',
-        //   sessionId: 4,
-        //   chatRoom: 'Pruebita',
-        // });
 
         await newConnection.start();
         await newConnection.invoke('JoinSpecificChatRoom', {
@@ -59,16 +108,18 @@ export const Chat = () => {
     }
   }, [messagesAreLoading]);
 
-  // useEffect(() => {
-  //   if (connection)
-  //     connection.invoke('JoinSpecificChatRoom', {
-  //       userName: 'moderadorr@app.com',
-  //       sessionId: 4,
-  //       chatRoom: 'Pruebita',
-  //     });
-  // }, [connection]);
+  return {
+    connection,
+    messages,
+    chatIsLoading,
+    setConnection,
+  };
+};
 
-  console.log(messages);
+export const Chat = ({ id }: ChatProps) => {
+  const { connection, messages, chatIsLoading, setConnection } = useChat({
+    id,
+  });
 
   return (
     <div className="flex flex-col h-full">

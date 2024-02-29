@@ -1,7 +1,7 @@
 import { Message } from './message';
 
 interface Props {
-  messages: { userName: string; msg: string }[];
+  messages: { userName: string; text: string }[];
 }
 
 export const MessageList = ({ messages }: Props) => {
