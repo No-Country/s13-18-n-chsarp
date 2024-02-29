@@ -10,3 +10,4 @@ export * from './popover';
 export * from './radio-group';
 export * from './toast';
 export * from './toaster';
+export * from './select';
