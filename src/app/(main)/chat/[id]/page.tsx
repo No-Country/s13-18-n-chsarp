@@ -1,7 +1,7 @@
 import { Chat } from '@/components';
 
-const page = () => {
-  return <Chat />;
+const page = ({ params }: any) => {
+  return <Chat id={params.id} />;
 };
 
 export default page;
