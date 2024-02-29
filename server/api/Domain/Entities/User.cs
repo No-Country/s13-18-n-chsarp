@@ -11,6 +11,8 @@ public class User : IdentityUser
     public bool IsDeleted { get; set; } = false;
     public bool IsBanned { get; set; } = false;
     public string Gender { get; set; } = string.Empty;
+    public string? UrlProfileImage { get; set; }
+    public List<Review> Reviews { get; set; } = new List<Review>();
 }
 
 

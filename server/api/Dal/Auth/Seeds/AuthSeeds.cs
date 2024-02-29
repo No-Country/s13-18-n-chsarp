@@ -34,6 +34,7 @@ public static class AuthSeeds
             Dni = "",
             DateOfBirth = DateTime.Now.AddYears(20),
             Gender = "N/A",
+            UrlProfileImage = null
         };
 
         var result = await _userManager.CreateAsync(user, password);

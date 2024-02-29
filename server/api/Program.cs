@@ -3,8 +3,10 @@ using Api.Controllers.Hubs;
 using Api.Dal;
 using Api.Dal.Auth;
 using Api.Dal.Auth.Seeds;
+using Api.Dal.Reviews;
 using Api.Dal.Server;
 using Api.Domain.Entities;
+using Api.Domain.Extensions;
 using Api.Domain.HubModels;
 using Api.Domain.Interfaces.Bll;
 using Api.Domain.Interfaces.Dal;
@@ -43,8 +45,13 @@ builder.Services.AddScoped<IMessageService, MessageService>();
 
 builder.Services.AddScoped<ChannelService>();
 
+builder.Services.AddScoped<CloudinaryService>();
+
 builder.Services.AddScoped<IConnectionUserRepository, ConnectionUserRepository>();
 builder.Services.AddScoped<IConnectionUserService, ConnectionUserService>();
+
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
 
 #region Auth  
 //TODO needs refactor
@@ -124,6 +131,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.Configure<CloudinarySetting>(builder.Configuration.GetSection("CloudinarySettings"));
 
 builder.Services.AddCors(policyBuilder =>
     policyBuilder.AddDefaultPolicy(policy =>

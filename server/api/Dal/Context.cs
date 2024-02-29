@@ -24,5 +24,6 @@ public class Context : IdentityDbContext<User>
     public DbSet<Channel> Channels { get; set; }
     public DbSet<Message> Messages { get; set; }
     public DbSet<ConnectionUser> ConnectionUsers { get; set; }
+    public DbSet<Review> Reviews { get; set; }
    
 }

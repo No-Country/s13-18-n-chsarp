@@ -22,7 +22,9 @@ namespace Api.Controllers
         public async Task<ActionResult> RegisterSession([FromBody] SessionRequest request)
         {
             var name = HttpContext.User.Claims.Where(c => c.Type == "Name").FirstOrDefault().Value;
-            var session = await _sessionService.CreateSession(request, name);
+            var id = HttpContext.User.Claims.Where(c => c.Type == "Id").FirstOrDefault().Value;
+            var guidId = new Guid(id);
+            var session = await _sessionService.CreateSession(request, name, guidId);
             return Created();
         }
 

@@ -5,7 +5,7 @@ namespace Api.Domain.Interfaces.Dal
 {
     public interface ISessionRepository
     {
-        Task<SessionResponse> Create(SessionRequest newSession, string name);
+        Task<SessionResponse> Create(SessionRequest newSession, string name, Guid id);
 
         Task<SessionResponse> Update(int id, SessionRequest updateSession);
 

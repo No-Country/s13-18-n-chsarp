@@ -17,7 +17,7 @@ namespace Api.Dal.Server
             _context = context;
             _mapper = mapper;
         }
-        public async Task<SessionResponse> Create(SessionRequest newSession, string name)
+        public async Task<SessionResponse> Create(SessionRequest newSession, string name, Guid id)
         {
             try
             {
@@ -31,6 +31,7 @@ namespace Api.Dal.Server
                     Name = newSession.Name,
                     Messages = new List<Message>(),
                     ModeratorName = name,
+                    ModeratorId = id,
                     Created_Date = DateTime.Now,
                     Init_Date = newSession.Init_Date,
                     Close_Date = newSession.Close_Date,
@@ -47,6 +48,7 @@ namespace Api.Dal.Server
                     ChannelId = session.ChannelId,
                     Messages = new List<MessageVModel>(),
                     ModeratorName = session.ModeratorName,
+                    ModeratorId = session.ModeratorId,
                     Created_Date = session.Created_Date,
                     Init_Date = session.Init_Date,
                     Duration = session.Duration,
