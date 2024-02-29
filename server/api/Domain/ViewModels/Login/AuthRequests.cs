@@ -17,3 +17,14 @@ public record RegisterRequest(
     DateTime? DateOfBirth,
     string Gender
 );
+
+public record RegisterModeratorRequest(
+    [Required]
+    string Dni,
+    [Required]
+    DateTime DateOfBirth,
+    [Required]
+    string Gender,
+    [Required]
+    string UrlProfileImage
+);

@@ -10,6 +10,7 @@ namespace Api.Domain.Entities
         public string Name { get; set; }
         public List<Message> Messages { get; set; } = new List<Message>();
         public string ModeratorName { get; set; } = string.Empty;
+        public Guid ModeratorId { get; set; }
         public DateTime Created_Date { get; set; }
         public DateTime? Init_Date { get; set; }
         public DateTime? Close_Date { get; set; }

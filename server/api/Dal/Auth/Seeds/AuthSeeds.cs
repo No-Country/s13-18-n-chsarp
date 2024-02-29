@@ -34,14 +34,15 @@ public static class AuthSeeds
             Dni = "",
             DateOfBirth = DateTime.Now.AddYears(20),
             Gender = "N/A",
+            UrlProfileImage = null
         };
 
         var result = await _userManager.CreateAsync(user, password);
 
-       if(result.Succeeded)
+        if (result.Succeeded)
         {
             //set role
-           var roleSetResult = await _userManager.AddToRoleAsync(user, Role.Moderator);
+            var roleSetResult = await _userManager.AddToRoleAsync(user, Role.Moderator);
         }
     }
 }

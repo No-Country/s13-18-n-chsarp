@@ -1,5 +1,6 @@
 ﻿using Api.Domain.Interfaces.Dal;
 using Api.Domain.ViewModels.Login;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -23,10 +24,27 @@ namespace api.Controllers
             if (!result.isSuccesfully)
                 return BadRequest(result);
 
-            var response = 
-                new RegisterResponse(result.jwt,result.email, result.message,result.isSuccesfully, result.user);
-           
+            var response =
+                new RegisterResponse(result.jwt, result.email, result.message, result.isSuccesfully, result.user);
+
             return CreatedAtAction(nameof(Register), response);
+        }
+
+        [HttpPost("registerModerator")]
+        [Authorize]
+        public async Task<ActionResult<RegisterResponse>> ChangeRol([FromBody] RegisterModeratorRequest request)
+        {
+            var email = HttpContext.User.Claims.Where(c => c.Type == "Email").FirstOrDefault().Value;
+
+            var result = await _authRepository.ChangeRol(request, email);
+
+            if (!result.isSuccesfully)
+                return BadRequest(result);
+
+            var response =
+                new RegisterResponse(result.jwt, result.email, result.message, result.isSuccesfully, result.user);
+
+            return CreatedAtAction(nameof(ChangeRol), response);
         }
 
         [HttpPost("login")]
@@ -37,7 +55,7 @@ namespace api.Controllers
             if (!result.isSuccesfully)
                 return Unauthorized(result);
 
-            var response = new LoginResponse(result.jwt,result.email, result.message, true, result.user);
+            var response = new LoginResponse(result.jwt, result.email, result.message, true, result.user);
 
             return Ok(response);
         }

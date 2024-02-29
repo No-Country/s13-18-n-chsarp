@@ -1,5 +1,6 @@
 ﻿using Api.Domain.Dto;
 using Api.Domain.Entities;
+using Api.Domain.ViewModels.Reviews;
 using Api.Domain.ViewModels.Server;
 using AutoMapper;
 
@@ -18,6 +19,7 @@ namespace Api.Domain.Utilities
             CreateMap<ChannelCreateRequest, Channel>().IncludeAllDerived();
             CreateMap<ChannelRequest, Channel>().IncludeAllDerived();
             CreateMap<ConnectionUser, ConnectionUserDTO>().ReverseMap();
+            CreateMap<Review, ReviewResponse>();
         }
     }
 }

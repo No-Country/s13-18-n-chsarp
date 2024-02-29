@@ -20,9 +20,9 @@ namespace Api.Bll
             _mapper = mapper;
         }
 
-        public async Task<SessionResponse> CreateSession(SessionRequest session, string name)
+        public async Task<SessionResponse> CreateSession(SessionRequest session, string name, Guid id)
         {
-            var newsession = await _sessionRepository.Create(session, name);
+            var newsession = await _sessionRepository.Create(session, name, id);
             var msg = new MessageVModel()
             {
                 SessionId = newsession.Id,

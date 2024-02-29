@@ -8,6 +8,7 @@ namespace Api.Domain.ViewModels.Server
         public int Id { get; set; }
         public int ChannelId { get; set; }
         public string Name { get; set; } = string.Empty;
+        public Guid ModeratorId { get; set; }
         public List<MessageVModel> Messages { get; set; } = new List<MessageVModel>();
         public string ModeratorName { get; set; } = string.Empty;
         public DateTime Created_Date { get; set; }
