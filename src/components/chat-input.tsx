@@ -2,7 +2,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { HubConnection } from '@microsoft/signalr';
 import { SendHorizontalIcon } from 'lucide-react';
-import { useTheme } from 'next-themes';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Button, Form, FormField, Input } from './ui';
@@ -13,7 +13,7 @@ interface ChatInputProps {
 }
 
 export function ChatInput({ connection, setConnection }: ChatInputProps) {
-  const { resolvedTheme } = useTheme();
+  const [isLoading, setIsLoading] = useState(false);
 
   const formSchema = z.object({
     message: z.string().min(1),
@@ -28,12 +28,14 @@ export function ChatInput({ connection, setConnection }: ChatInputProps) {
 
   const sendMessage = async (values: z.infer<typeof formSchema>) => {
     try {
+      setIsLoading(true);
       if (connection) {
         let result = await connection.invoke('SendMessage', values.message);
         if (result === 'Disconnected') {
           setConnection(null);
         } else {
           form.reset();
+          setIsLoading(false);
         }
       }
     } catch (error) {
@@ -44,6 +46,7 @@ export function ChatInput({ connection, setConnection }: ChatInputProps) {
   return (
     <Form {...form}>
       <form
+        autoComplete="off"
         onSubmit={form.handleSubmit(sendMessage)}
         className="flex gap-4 w-full"
       >
@@ -52,6 +55,7 @@ export function ChatInput({ connection, setConnection }: ChatInputProps) {
           control={form.control}
           render={({ field }) => (
             <Input
+              disabled={isLoading}
               placeholder="Tu mensaje"
               className="dark:text-white text-black bg-background"
               {...field}

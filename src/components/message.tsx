@@ -1,3 +1,4 @@
+import { useUserStore } from '@/hooks';
 import { cn } from '@/lib';
 
 interface Props {
@@ -7,7 +8,8 @@ interface Props {
 }
 
 export const Message = ({ prevUser, userName, text }: Props) => {
-  const isLoggedUser = 'moderadorr@app.com' === userName;
+  const { user } = useUserStore();
+  const isLoggedUser = user?.user.name === userName;
   const isSameAsPreviousUser = userName === prevUser;
 
   if (userName === 'ADMIN') {
@@ -21,7 +23,7 @@ export const Message = ({ prevUser, userName, text }: Props) => {
   return (
     <div
       className={cn(
-        'bg-[#325544] self-end px-3 py-2 rounded-xl flex flex-col self-start max-w-[400px] text-white',
+        'bg-[#325544] px-3 py-2 rounded-xl flex flex-col self-start max-w-[400px] text-white',
         isLoggedUser && 'bg-[#227f77] self-end',
         !isSameAsPreviousUser && 'mt-2',
         isLoggedUser && !isSameAsPreviousUser && 'rounded-tr-none',
@@ -29,7 +31,7 @@ export const Message = ({ prevUser, userName, text }: Props) => {
       )}
     >
       {!isSameAsPreviousUser && !isLoggedUser && (
-        <p className="font-medium">{userName}</p>
+        <p className="font-bold">{userName}</p>
       )}
       <p>{text}</p>
     </div>

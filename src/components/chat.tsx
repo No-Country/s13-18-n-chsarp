@@ -1,6 +1,6 @@
 'use client';
 
-import { useFetchAndLoad } from '@/hooks';
+import { useFetchAndLoad, useUserStore } from '@/hooks';
 import { Axios } from '@/lib';
 import { AxiosCall, Session } from '@/models';
 import { loadAbort } from '@/utils';
@@ -9,6 +9,7 @@ import {
   HubConnectionBuilder,
   LogLevel,
 } from '@microsoft/signalr';
+import { redirect } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChatHeader } from './chat-header';
 import { ChatInput } from './chat-input';
@@ -45,21 +46,28 @@ export const getSession = (params: any): AxiosCall<Session> => {
 
 // use.session.ts
 export const useSession = ({ sessionFn, setMessages }: useSessionProps) => {
+  const [sessionIsNull, setSessionIsNull] = useState(false);
   const { loading, callEndpoint } = useFetchAndLoad();
 
   const handleGetSessionMessages = useCallback(
     async (param: any): Promise<void> => {
       const response = await callEndpoint(sessionFn(param));
-      if (response.data) setMessages(response.data.messages);
+      if (response?.data) {
+        setMessages(response.data.messages);
+      } else {
+        setSessionIsNull(true);
+      }
     },
     [callEndpoint, sessionFn]
   );
 
-  return { loading, handleGetSessionMessages };
+  return { loading, handleGetSessionMessages, sessionIsNull };
 };
 
 // use.chat.ts
 export const useChat = ({ id }: useChatProps) => {
+  const { user } = useUserStore();
+
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   const [connection, setConnection] = useState<HubConnection | null>(null);
@@ -67,7 +75,7 @@ export const useChat = ({ id }: useChatProps) => {
   const [messagesAreLoading, setMessagesAreLoading] = useState(true);
   const [chatIsLoading, setChatIsLoading] = useState(true);
 
-  const { handleGetSessionMessages } = useSession({
+  const { handleGetSessionMessages, sessionIsNull } = useSession({
     sessionFn: getSession,
     setMessages,
   });
@@ -82,30 +90,35 @@ export const useChat = ({ id }: useChatProps) => {
 
   useEffect(() => {
     if (!messagesAreLoading) {
-      (async () => {
-        const newConnection = new HubConnectionBuilder()
-          .withUrl('https://s13.runasp.net/chat')
-          .configureLogging(LogLevel.Information)
-          .build();
+      if (!sessionIsNull) {
+        (async () => {
+          const newConnection = new HubConnectionBuilder()
+            .withUrl('https://s13.runasp.net/chat')
+            .configureLogging(LogLevel.Information)
+            .build();
 
-        newConnection.on('JoinSpecificChatRoom', (userName, msg) => {
-          setMessages((messages) => [...messages, { userName, text: msg }]);
-        });
+          newConnection.on('JoinSpecificChatRoom', (userName, msg) => {
+            setMessages((messages) => [...messages, { userName, text: msg }]);
+          });
 
-        newConnection.on('ReceiveSpecificMessage', (userName, msg) => {
-          setMessages((messages) => [...messages, { userName, text: msg }]);
-        });
+          newConnection.on('ReceiveSpecificMessage', (userName, msg) => {
+            setMessages((messages) => [...messages, { userName, text: msg }]);
+          });
 
-        await newConnection.start();
-        await newConnection.invoke('JoinSpecificChatRoom', {
-          userName: 'moderadorr@app.com',
-          sessionId: 4,
-          chatRoom: 'Pruebita',
-        });
+          await newConnection.start();
+          await newConnection.invoke('JoinSpecificChatRoom', {
+            // TODO: arreglar esto
+            userName: user?.user.name,
+            sessionId: +id,
+            chatRoom: 'Prueba',
+          });
 
-        setConnection(newConnection);
-        setChatIsLoading(false);
-      })();
+          setConnection(newConnection);
+          setChatIsLoading(false);
+        })();
+      } else {
+        redirect('/chat');
+      }
     }
   }, [messagesAreLoading]);
 
@@ -125,6 +138,25 @@ export const useChat = ({ id }: useChatProps) => {
     messagesContainerRef,
   };
 };
+
+// TODO: agregar estas funciones
+// const LeaveChatRoom = async (userName, chatRoom, sessionId) => {
+//   try {
+//     if (connection != null) await connection.invoke("LeaveChatRoom", { userName, sessionId, chatRoom })
+//     setConnection(null)
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
+// const CloseChatRoom = async (userName, chatRoom, sessionId) => {
+//   try {
+//     await connection.invoke("CloseChatRoom", { userName, sessionId, chatRoom })
+//     setConnection(null)
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 
 export const Chat = ({ id }: ChatProps) => {
   const {
