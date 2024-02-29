@@ -9,7 +9,7 @@ import {
   HubConnectionBuilder,
   LogLevel,
 } from '@microsoft/signalr';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChatHeader } from './chat-header';
 import { ChatInput } from './chat-input';
 import { MessageList } from './message-list';
@@ -50,7 +50,6 @@ export const useSession = ({ sessionFn, setMessages }: useSessionProps) => {
   const handleGetSessionMessages = useCallback(
     async (param: any): Promise<void> => {
       const response = await callEndpoint(sessionFn(param));
-
       if (response.data) setMessages(response.data.messages);
     },
     [callEndpoint, sessionFn]
@@ -61,6 +60,8 @@ export const useSession = ({ sessionFn, setMessages }: useSessionProps) => {
 
 // use.chat.ts
 export const useChat = ({ id }: useChatProps) => {
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+
   const [connection, setConnection] = useState<HubConnection | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [messagesAreLoading, setMessagesAreLoading] = useState(true);
@@ -108,16 +109,31 @@ export const useChat = ({ id }: useChatProps) => {
     }
   }, [messagesAreLoading]);
 
+  useEffect(() => {
+    // Scroll to the bottom of the container when messages change
+    if (messagesContainerRef.current && !chatIsLoading) {
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
+    }
+  }, [messages, chatIsLoading]);
+
   return {
     connection,
     messages,
     chatIsLoading,
     setConnection,
+    messagesContainerRef,
   };
 };
 
 export const Chat = ({ id }: ChatProps) => {
-  const { connection, messages, chatIsLoading, setConnection } = useChat({
+  const {
+    connection,
+    messages,
+    chatIsLoading,
+    setConnection,
+    messagesContainerRef,
+  } = useChat({
     id,
   });
 
@@ -131,7 +147,7 @@ export const Chat = ({ id }: ChatProps) => {
       )}
       {!chatIsLoading && (
         <>
-          <div className="overflow-y-auto">
+          <div ref={messagesContainerRef} className="overflow-y-auto">
             <MessageList messages={messages} />
           </div>
           <div className="mt-auto min-h-[62px] flex items-center">

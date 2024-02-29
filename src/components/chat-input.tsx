@@ -1,8 +1,11 @@
 'use client';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { HubConnection } from '@microsoft/signalr';
-import { SendHorizonalIcon } from 'lucide-react';
-import { useState } from 'react';
-import { Button, Input } from './ui';
+import { SendHorizontalIcon } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { Button, Form, FormField, Input } from './ui';
 
 interface ChatInputProps {
   connection: HubConnection | null;
@@ -10,34 +13,56 @@ interface ChatInputProps {
 }
 
 export function ChatInput({ connection, setConnection }: ChatInputProps) {
-  const [inputMessage, setInputMessage] = useState('');
-  const sendMessage = async () => {
-    if (inputMessage.length > 0) {
-      try {
-        if (connection) {
-          let result = await connection.invoke('SendMessage', inputMessage);
-          if (result === 'Disconnected') {
-            setConnection(null);
-          } else {
-            setInputMessage('');
-          }
+  const { resolvedTheme } = useTheme();
+
+  const formSchema = z.object({
+    message: z.string().min(1),
+  });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      message: '',
+    },
+  });
+
+  const sendMessage = async (values: z.infer<typeof formSchema>) => {
+    try {
+      if (connection) {
+        let result = await connection.invoke('SendMessage', values.message);
+        if (result === 'Disconnected') {
+          setConnection(null);
+        } else {
+          form.reset();
         }
-      } catch (error) {
-        console.log(error);
       }
+    } catch (error) {
+      console.log(error);
     }
   };
 
   return (
-    <div className="flex gap-4 w-full">
-      <Input
-        value={inputMessage}
-        onChange={(e) => setInputMessage(e.target.value)}
-        className="not-dark bg-white text-black"
-      />
-      <Button className="dark" onClick={sendMessage}>
-        <SendHorizonalIcon className="dark " />
-      </Button>
-    </div>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(sendMessage)}
+        className="flex gap-4 w-full"
+      >
+        <FormField
+          name="message"
+          control={form.control}
+          render={({ field }) => (
+            <Input
+              placeholder="Tu mensaje"
+              className="dark:text-white text-black bg-background"
+              {...field}
+            />
+          )}
+        />
+
+        <Button type="submit" className="bg-[#137d7b] text-[#F29683]">
+          <SendHorizontalIcon />
+        </Button>
+      </form>
+    </Form>
   );
 }
