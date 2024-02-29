@@ -1,30 +1,39 @@
+import { useUserStore } from '@/hooks';
 import { cn } from '@/lib';
 
 interface Props {
   prevUser: string | null;
-  user: string;
-  content: string;
-  id: string;
+  userName: string;
+  text: string;
 }
 
-export const Message = ({ prevUser, user, content, id }: Props) => {
-  const isLoggedUser = '1' === user;
-  const isSameAsPreviousUser = user === prevUser;
+export const Message = ({ prevUser, userName, text }: Props) => {
+  const { user } = useUserStore();
+  const isLoggedUser = user?.user.name === userName;
+  const isSameAsPreviousUser = userName === prevUser;
+
+  if (userName === 'ADMIN') {
+    return (
+      <div className="bg-[#ebf3f9] px-3 py-2 rounded-xl flex flex-col max-w-[400px] text-black self-center">
+        <p>{text}</p>
+      </div>
+    );
+  }
 
   return (
     <div
       className={cn(
-        'bg-[#ebf3f9] px-3 py-2 rounded-xl flex flex-col self-start max-w-[400px] text-black',
-        isLoggedUser && 'self-end',
+        'bg-[#325544] px-3 py-2 rounded-xl flex flex-col self-start max-w-[400px] text-white',
+        isLoggedUser && 'bg-[#227f77] self-end',
         !isSameAsPreviousUser && 'mt-2',
         isLoggedUser && !isSameAsPreviousUser && 'rounded-tr-none',
         !isLoggedUser && !isSameAsPreviousUser && 'rounded-tl-none'
       )}
     >
       {!isSameAsPreviousUser && !isLoggedUser && (
-        <p className="font-medium">User {user}</p>
+        <p className="font-bold">{userName}</p>
       )}
-      <p>{content}</p>
+      <p>{text}</p>
     </div>
   );
 };

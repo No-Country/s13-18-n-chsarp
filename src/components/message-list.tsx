@@ -1,17 +1,17 @@
 import { Message } from './message';
 
 interface Props {
-  messages: { user: string; content: string; id: string }[];
+  messages: { userName: string; text: string }[];
 }
 
 export const MessageList = ({ messages }: Props) => {
   return (
-    <div className="flex flex-col w-full gap-y-1 overflow-y-auto">
+    <div className="flex flex-col w-full gap-y-1 overflow-y-auto px-1">
       {messages.map((message, i) => (
         <Message
-          key={message.id}
+          key={i}
           {...message}
-          prevUser={messages[i - 1]?.user || null}
+          prevUser={messages[i - 1]?.userName || null}
         />
       ))}
     </div>
