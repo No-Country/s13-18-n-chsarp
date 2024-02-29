@@ -19,6 +19,6 @@ namespace Api.Controllers
         {
             var result = await _imageService.UploadImage(file);
             return Ok(result);
-        } 
+        }
     }
 }

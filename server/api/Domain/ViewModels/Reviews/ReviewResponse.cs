@@ -4,7 +4,7 @@ namespace Api.Domain.ViewModels.Reviews
 {
     public class ReviewListResponse
     {
-        [Precision(2,1)]
+        [Precision(2, 1)]
         public decimal AverageStars { get; set; }
         public List<ReviewResponse> Reviews { get; set; } = new List<ReviewResponse>();
     }

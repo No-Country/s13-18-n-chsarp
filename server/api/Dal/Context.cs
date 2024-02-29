@@ -10,14 +10,14 @@ public class Context : IdentityDbContext<User>
     public Context(DbContextOptions<Context> options) : base(options)
     {
         Database.EnsureCreated();
-        
+
         Database.Migrate();
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         ChannelSeeds.Seed(builder);
-       base.OnModelCreating(builder);
+        base.OnModelCreating(builder);
     }
 
     public DbSet<Session> Sessions { get; set; }
@@ -25,5 +25,5 @@ public class Context : IdentityDbContext<User>
     public DbSet<Message> Messages { get; set; }
     public DbSet<ConnectionUser> ConnectionUsers { get; set; }
     public DbSet<Review> Reviews { get; set; }
-   
+
 }

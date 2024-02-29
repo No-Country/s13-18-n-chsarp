@@ -31,7 +31,7 @@ namespace Api.Bll
                 var query = await _reviewRepository.GetAll();
                 var reviews = await query
                     .Where(r => r.UserId == userId)
-                    .OrderByDescending(r=>r.Date)
+                    .OrderByDescending(r => r.Date)
                     .ToListAsync();
                 var average = await query
                     .Where(r => r.UserId == userId)
