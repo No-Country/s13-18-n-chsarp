@@ -25,7 +25,7 @@ export const preseleccionSchema = z.object({
             (file) => file?.length == 1,
             'La foto de perfil es requerida.'
           ),
-  birthdate: z.date({
+  dateOfBirth: z.date({
     required_error: 'La fecha de nacimiento es requerida.',
   }),
   phone: z
@@ -39,7 +39,7 @@ export const preseleccionSchema = z.object({
       invalid_type_error: 'El email debe ser un texto',
     })
     .email(),
-  nationality: z.string({ required_error: 'La nacionalidad es requerida.' }),
+  country: z.string({ required_error: 'La nacionalidad es requerida.' }),
   gender: z.enum(['I prefer not to say', 'male', 'female'], {
     required_error: 'El Género es requerido.',
   }),
