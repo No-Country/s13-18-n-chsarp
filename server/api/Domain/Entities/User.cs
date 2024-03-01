@@ -12,6 +12,7 @@ public class User : IdentityUser
     public bool IsBanned { get; set; } = false;
     public string Gender { get; set; } = string.Empty;
     public string? UrlProfileImage { get; set; }
+    public string? Country { get; set; }
     public List<Review> Reviews { get; set; } = new List<Review>();
 }
 

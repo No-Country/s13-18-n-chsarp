@@ -25,7 +25,7 @@ namespace api.Controllers
                 return BadRequest(result);
 
             var response =
-                new RegisterResponse(result.jwt, result.email, result.message, result.isSuccesfully, result.user);
+                new RegisterResponse(result.jwt, result.email, result.message, result.isSuccesfully, result.user, result.Role);
 
             return CreatedAtAction(nameof(Register), response);
         }
@@ -42,7 +42,7 @@ namespace api.Controllers
                 return BadRequest(result);
 
             var response =
-                new RegisterResponse(result.jwt, result.email, result.message, result.isSuccesfully, result.user);
+                new RegisterResponse(result.jwt, result.email, result.message, result.isSuccesfully, result.user, result.Role);
 
             return CreatedAtAction(nameof(ChangeRol), response);
         }
@@ -55,7 +55,7 @@ namespace api.Controllers
             if (!result.isSuccesfully)
                 return Unauthorized(result);
 
-            var response = new LoginResponse(result.jwt, result.email, result.message, true, result.user);
+            var response = new LoginResponse(result.jwt, result.email, result.message, true, result.user, result.Role);
 
             return Ok(response);
         }

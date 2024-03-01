@@ -32,7 +32,8 @@ public class AuthenticationRepository : IAuthenticationRepository
                 Dni = request.Dni ?? "",
                 DateOfBirth = request.DateOfBirth ?? new DateTime(1, 1, 1),
                 Gender = request.Gender,
-                UrlProfileImage = null
+                UrlProfileImage = null,
+                Country = null
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
@@ -41,17 +42,17 @@ public class AuthenticationRepository : IAuthenticationRepository
             {
                 await _userManager.AddToRoleAsync(user, Role.User);
                 var jwt = GetToken(user, new[] { new Claim("Role", Role.User) });
-                return new RegisterResponse(jwt, user.Email, "Success", true, user.ToResponse());
+                return new RegisterResponse(jwt, user.Email, "Success", true, user.ToResponse(), Role.User);
             }
             else
             {
                 var messages = string.Join("-", result.Errors.Select(x => $"{x.Code}|{x.Description}"));
-                return new RegisterResponse("", "", messages, false, null);
+                return new RegisterResponse("", "", messages, false, null, null);
             }
         }
         catch (Exception e)
         {
-            return new RegisterResponse("", "", e.Message, false, null);
+            return new RegisterResponse("", "", e.Message, false, null, null);
         }
     }
     public async Task<LoginResponse> Login(LoginRequest request)
@@ -62,7 +63,7 @@ public class AuthenticationRepository : IAuthenticationRepository
 
         if (user is null || !await _userManager.CheckPasswordAsync(user, request.Password))
         {
-            return new LoginResponse(null, "", "Invalid Credentials", false, null);
+            return new LoginResponse(null, "", "Invalid Credentials", false, null, null);
         }
 
         var authClaims = new List<Claim>
@@ -70,8 +71,7 @@ public class AuthenticationRepository : IAuthenticationRepository
             new("Name", user.Name),
             new("Email", user.Email),
             new("Id", user.Id),
-            new("UserName", user.UserName),
-            new("IsVerified", user.IsVerified.ToString())
+            new("UserName", user.UserName)
         };
 
         var userRoles = await _userManager.GetRolesAsync(user);
@@ -80,7 +80,7 @@ public class AuthenticationRepository : IAuthenticationRepository
 
         var token = GetToken(authClaims);
 
-        return new LoginResponse(new JwtSecurityTokenHandler().WriteToken(token), user.Email, "Login Successful", true, user.ToResponse());
+        return new LoginResponse(new JwtSecurityTokenHandler().WriteToken(token), user.Email, "Login Successful", true, user.ToResponse(), userRoles[0]);
     }
 
 
@@ -104,7 +104,8 @@ public class AuthenticationRepository : IAuthenticationRepository
         {
             new("Name", user.Name),
             new("Email", user.Email),
-            new("Id", user.Id)
+            new("Id", user.Id),
+            new("UserName", user.UserName)
         };
 
         authClaims.AddRange(additionalClaims);
@@ -131,6 +132,7 @@ public class AuthenticationRepository : IAuthenticationRepository
             user.DateOfBirth = request.DateOfBirth;
             user.Gender = request.Gender;
             user.UrlProfileImage = request.UrlProfileImage;
+            user.Country = request.Country;
 
 
             var result = await _userManager.UpdateAsync(user);
@@ -140,17 +142,17 @@ public class AuthenticationRepository : IAuthenticationRepository
                 await _userManager.RemoveFromRoleAsync(user, Role.User);
                 await _userManager.AddToRoleAsync(user, Role.Moderator);
                 var jwt = GetToken(user, new[] { new Claim("Role", Role.Moderator) });
-                return new RegisterResponse(jwt, user.Email, "Success", true, user.ToResponse());
+                return new RegisterResponse(jwt, user.Email, "Success", true, user.ToResponse(), Role.Moderator);
             }
             else
             {
                 var messages = string.Join("-", result.Errors.Select(x => $"{x.Code}|{x.Description}"));
-                return new RegisterResponse("", "", messages, false, null);
+                return new RegisterResponse("", "", messages, false, null, null);
             }
         }
         catch (Exception e)
         {
-            return new RegisterResponse("", "", e.Message, false, null);
+            return new RegisterResponse("", "", e.Message, false, null, null);
         }
     }
 }
