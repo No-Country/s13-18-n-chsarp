@@ -9,13 +9,15 @@ public static class UserExtensions
     {
         var r = new UserResponse()
         {
-            DateOfBirth = user.DateOfBirth.CompareTo(DateTime.Parse("1/1/1"))==-1?null:user.DateOfBirth,
-            Dni = user.Dni==""?null:user.Dni,
+            DateOfBirth = user.DateOfBirth.CompareTo(DateTime.Parse("1/1/1")) == -1 ? null : user.DateOfBirth,
+            Dni = user.Dni == "" ? null : user.Dni,
             Gender = user.Gender,
             IsBanned = user.IsBanned,
             IsDeleted = user.IsDeleted,
             IsVerified = user.IsVerified,
-            Name = user.Name
+            Name = user.Name,
+            UrlProfileImage = user.UrlProfileImage,
+            Country = user.Country
         };
         return r;
     }

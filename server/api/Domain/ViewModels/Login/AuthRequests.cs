@@ -26,5 +26,7 @@ public record RegisterModeratorRequest(
     [Required]
     string Gender,
     [Required]
-    string UrlProfileImage
+    string UrlProfileImage,
+    [Required]
+    string Country
 );

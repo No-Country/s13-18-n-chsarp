@@ -1,6 +1,6 @@
 ﻿namespace Api.Domain.ViewModels.Login;
 
-public class UserResponse 
+public class UserResponse
 {
     public string Name { get; set; } = string.Empty;
     public string? Dni { get; set; } = string.Empty;
@@ -10,4 +10,5 @@ public class UserResponse
     public bool IsBanned { get; set; } = false;
     public string Gender { get; set; } = string.Empty;
     public string? UrlProfileImage { get; set; } = string.Empty;
+    public string? Country { get; set; }
 }
