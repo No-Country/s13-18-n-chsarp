@@ -134,7 +134,6 @@ public class AuthenticationRepository : IAuthenticationRepository
             user.UrlProfileImage = request.UrlProfileImage;
             user.Country = request.Country;
 
-
             var result = await _userManager.UpdateAsync(user);
 
             if (result.Succeeded)

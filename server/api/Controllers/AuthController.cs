@@ -1,4 +1,4 @@
-﻿using Api.Domain.Interfaces.Dal;
+using Api.Domain.Interfaces.Dal;
 using Api.Domain.ViewModels.Login;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
