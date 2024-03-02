@@ -5,3 +5,4 @@ export { DateInput } from './date.input';
 export { GenderInput } from './gender.input';
 export { FileInput } from './file.input';
 export { OptionsRadioGroup } from './options.radio-group';
+export { ContainerFormPreseleccion } from './container.form-preseleccion';
