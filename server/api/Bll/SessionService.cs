@@ -12,12 +12,14 @@ namespace Api.Bll
     {
         private readonly ISessionRepository _sessionRepository;
         private readonly IMessageRepository _messageRepository;
+        private readonly IReviewService _reviewService;
         private readonly IMapper _mapper;
-        public SessionService(ISessionRepository sessionRepository, IMessageRepository messageRepository, IMapper mapper)
+        public SessionService(ISessionRepository sessionRepository, IMessageRepository messageRepository, IMapper mapper, IReviewService reviewService)
         {
             _sessionRepository = sessionRepository;
             _messageRepository = messageRepository;
             _mapper = mapper;
+            _reviewService = reviewService;
         }
 
         public async Task<SessionResponse> CreateSession(SessionRequest session, string name, Guid id)
@@ -60,7 +62,10 @@ namespace Api.Bll
 
         public async Task<SessionResponse> GetSessionById(int id)
         {
-            return await _sessionRepository.GetById(id);
+            var response = await _sessionRepository.GetById(id);
+            var review = await _reviewService.GetAllByUser(response.ModeratorId);
+            if (review != null) response.Reviews = review;
+            return response;
         }
 
         public Task<SessionResponse> UpdateSession(int id, SessionRequest updateSession)
