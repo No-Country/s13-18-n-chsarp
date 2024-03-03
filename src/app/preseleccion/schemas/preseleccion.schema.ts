@@ -14,17 +14,18 @@ export const preseleccionSchema = z.object({
       required_error: 'El apellido es requerido.',
       invalid_type_error: 'El apellido debe ser un texto.',
     })
-    .min(3, { message: 'El apellido debe tener un mínimo de 3 carácteres.' }),
-  file:
-    typeof window === 'undefined'
-      ? z.any()
-      : z
-          .instanceof(FileList)
-          .optional()
-          .refine(
-            (file) => file?.length == 1,
-            'La foto de perfil es requerida.'
-          ),
+    .min(3, { message: 'El apellido debe tener un mínimo de 3 carácteres.' })
+    .optional(),
+  // file:
+  //   typeof window === 'undefined'
+  //     ? z.any()
+  //     : z
+  //         .instanceof(FileList)
+  //         .optional()
+  //         .refine(
+  //           (file) => file?.length == 1,
+  //           'La foto de perfil es requerida.'
+  //         ),
   dateOfBirth: z.date({
     required_error: 'La fecha de nacimiento es requerida.',
   }),
@@ -40,7 +41,7 @@ export const preseleccionSchema = z.object({
     })
     .email(),
   country: z.string({ required_error: 'La nacionalidad es requerida.' }),
-  gender: z.enum(['I prefer not to say', 'male', 'female'], {
+  gender: z.string({
     required_error: 'El Género es requerido.',
   }),
   optionOne: z.enum(['si', 'no'], {

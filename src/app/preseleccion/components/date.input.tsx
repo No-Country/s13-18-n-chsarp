@@ -15,9 +15,13 @@ import { format } from 'date-fns';
 
 interface DateInputProps {
   field: ControllerRenderProps<any, 'dateOfBirth'>;
+  disabled?: boolean;
 }
 
-export const DateInput: FC<DateInputProps> = ({ field }): ReactElement => {
+export const DateInput: FC<DateInputProps> = ({
+  field,
+  disabled,
+}): ReactElement => {
   return (
     <FormItem className="flex flex-col">
       <FormLabel className="font-semibold text-2xl">
@@ -27,6 +31,7 @@ export const DateInput: FC<DateInputProps> = ({ field }): ReactElement => {
         <PopoverTrigger asChild>
           <FormControl className="text-xl bg-transparent border-x-0 border-t-0 border-b-[3px] shadow-none border-[#9EC79B] rounded-none w-full md:w-72">
             <Button
+              disabled={disabled}
               variant={'outline'}
               className="w-full pl-3 text-left font-normal"
             >

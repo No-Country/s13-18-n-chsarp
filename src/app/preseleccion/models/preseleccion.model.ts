@@ -10,12 +10,6 @@ export type PreseleccionSchema = z.infer<typeof preseleccionSchema>;
 /**
  * Valores por defecto del formulario de preseleccion.
  */
-
-enum Gender {
-  PREFER_NOT_TO_SAY = 'I prefer not to say',
-  MALE = 'male',
-  FEMALE = 'female',
-}
 enum Options {
   SI = 'si',
   NO = 'no',
@@ -24,11 +18,11 @@ enum Options {
 export const preseleccionDefaultValues = {
   name: '',
   lastname: '',
-  picture: '',
+  // file: '',
   phone: '',
   email: '',
   nationality: '',
-  gender: Gender.PREFER_NOT_TO_SAY,
+  gender: '',
   optionOne: Options.NO,
   optionTwo: Options.NO,
   optionThree: Options.NO,
