@@ -1,8 +1,8 @@
 'use client';
-import React, { FC, ReactElement } from 'react';
 import { Button, Form, FormField } from '@/components/ui';
-import { Loader2 } from 'lucide-react';
 import { usePreseleccion } from '@/hooks/use.preseleccion';
+import { Loader2 } from 'lucide-react';
+import { FC, ReactElement } from 'react';
 import { ControllerRenderProps } from 'react-hook-form';
 
 import {
@@ -18,7 +18,7 @@ import {
 const PreseleccionPage: FC = (): ReactElement => {
   const { form, status, handlePreseleccion } = usePreseleccion();
 
-  // const fileRef = form.register('file');
+  const fileRef = form.register('file');
 
   return (
     <ContainerFormPreseleccion>
@@ -78,13 +78,11 @@ const PreseleccionPage: FC = (): ReactElement => {
                 />
               )}
             />
-            {/* <FormField
+            <FormField
               control={form.control}
               name="file"
-              render={({ field }) => {
-                return <FileInput fileRef={fileRef} />;
-              }}
-            /> */}
+              render={() => <FileInput fileRef={fileRef} />}
+            />
           </div>
           <SubtitleForm subtitle="Información de contacto" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 gap-x-4">
@@ -163,7 +161,6 @@ const PreseleccionPage: FC = (): ReactElement => {
           <div className="w-full flex justify-end items-end">
             <Button
               disabled={!form.formState.isValid}
-              onClick={form.handleSubmit(handlePreseleccion)}
               className="bg-[#5D8966] hover:bg-[#22612F] text-white rounded-[32px] text-xl py-6 px-10"
               type="submit"
             >

@@ -1,4 +1,5 @@
 import z from 'zod';
+
 /**
  * Esquema de preseleccion de usuario.
  */
@@ -16,16 +17,15 @@ export const preseleccionSchema = z.object({
     })
     .min(3, { message: 'El apellido debe tener un mínimo de 3 carácteres.' })
     .optional(),
-  // file:
-  //   typeof window === 'undefined'
-  //     ? z.any()
-  //     : z
-  //         .instanceof(FileList)
-  //         .optional()
-  //         .refine(
-  //           (file) => file?.length == 1,
-  //           'La foto de perfil es requerida.'
-  //         ),
+  file:
+    typeof window === 'undefined'
+      ? z.any()
+      : z
+          .instanceof(FileList)
+          .refine(
+            (file) => file?.length == 1,
+            'La foto de perfil es requerida.'
+          ),
   dateOfBirth: z.date({
     required_error: 'La fecha de nacimiento es requerida.',
   }),
@@ -33,7 +33,8 @@ export const preseleccionSchema = z.object({
     .string({
       required_error: 'El número de teléfono es requerido.',
     })
-    .min(7, 'El número de teléfono debe tener un minimo de 7 carácteres.'),
+    .min(7, 'El número de teléfono debe tener un minimo de 7 carácteres.')
+    .optional(),
   email: z
     .string({
       required_error: 'El email es requerido.',
@@ -44,16 +45,25 @@ export const preseleccionSchema = z.object({
   gender: z.string({
     required_error: 'El Género es requerido.',
   }),
-  optionOne: z.enum(['si', 'no'], {
-    required_error: 'Debes seleccionar una opción.',
-  }),
-  optionTwo: z.enum(['si', 'no'], {
-    required_error: 'Debes seleccionar una opción.',
-  }),
-  optionThree: z.enum(['si', 'no'], {
-    required_error: 'Debes seleccionar una opción.',
-  }),
-  optionFour: z.enum(['si', 'no'], {
-    required_error: 'Debes seleccionar una opción.',
-  }),
+  dni: z.string({ required_error: 'El DNI es requerido.' }).optional(),
+  optionOne: z
+    .enum(['si', 'no'], {
+      required_error: 'Debes seleccionar una opción.',
+    })
+    .optional(),
+  optionTwo: z
+    .enum(['si', 'no'], {
+      required_error: 'Debes seleccionar una opción.',
+    })
+    .optional(),
+  optionThree: z
+    .enum(['si', 'no'], {
+      required_error: 'Debes seleccionar una opción.',
+    })
+    .optional(),
+  optionFour: z
+    .enum(['si', 'no'], {
+      required_error: 'Debes seleccionar una opción.',
+    })
+    .optional(),
 });

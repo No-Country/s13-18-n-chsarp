@@ -1,19 +1,26 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { type PreseleccionSchema } from '@/app/preseleccion/models';
 import { preseleccionSchema } from '@/app/preseleccion/schemas';
-import { useFetchAndLoad, useUserStore } from '@/hooks';
+import { preseleccionServices, uploadImage } from '@/app/preseleccion/services';
+import {
+  useFetchAndLoad,
+  useToast,
+  useUserStore /*, useUserContext */,
+} from '@/hooks';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useEffect } from 'react';
-import { preseleccionServices } from '@/app/preseleccion/services';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 export const usePreseleccion = () => {
   const form = useForm<PreseleccionSchema>({
     resolver: zodResolver(preseleccionSchema),
   });
 
+  // const { user } = useUserContext(state => state);
   const { user } = useUserStore();
+
+  const { toast } = useToast();
   const { loading, callEndpoint } = useFetchAndLoad();
 
   useEffect(() => {
@@ -33,17 +40,31 @@ export const usePreseleccion = () => {
   }, [user]);
 
   const handlePreseleccion: SubmitHandler<PreseleccionSchema> = useCallback(
-    async (values: any): Promise<void> => {
-      const formData = new FormData();
-      // formData.set('urlProfileImage', values.file);
-      formData.set('dni', values.dni);
-      formData.set('country', values.country);
+    async (values: PreseleccionSchema): Promise<void> => {
+      let urlProfileImage: string;
+
+      try {
+        urlProfileImage = await uploadImage(values.file![0]);
+      } catch (error) {
+        console.error({ error });
+        toast({
+          title: 'Hubo un error al subir la imagen.',
+          description: 'Ocurrio un error inesperado :(',
+          variant: 'destructive',
+        });
+        throw error;
+      }
+
+      const preselection = {
+        dni: 'STRING',
+        country: values.country,
+        dateOfBirth: values.dateOfBirth,
+        gender: values.gender,
+        urlProfileImage,
+      };
 
       if (user?.token) {
-        const response = await callEndpoint(
-          preseleccionServices(formData, user?.token)
-        );
-        console.log(response);
+        await callEndpoint(preseleccionServices(preselection, user?.token));
       }
     },
     [callEndpoint]

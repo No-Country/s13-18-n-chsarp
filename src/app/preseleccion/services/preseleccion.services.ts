@@ -11,7 +11,7 @@ export const preseleccionServices = (
   const Controller = loadAbort();
 
   return {
-    call: Axios.postForm<any>(url, data, {
+    call: Axios.post(url, data, {
       headers: { Authorization: 'Bearer ' + token },
     }),
 
