@@ -97,6 +97,15 @@ builder.Services
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
             RoleClaimType = "Role"
         };
+        options.Events = new JwtBearerEvents()
+        {
+            OnMessageReceived = context =>
+            {
+                if (context.Request.Path.ToString().StartsWith("/chat"))
+                    context.Token = context.Request.Query["access_token"];
+                return Task.CompletedTask;
+            },
+        };
     });
 #endregion
 

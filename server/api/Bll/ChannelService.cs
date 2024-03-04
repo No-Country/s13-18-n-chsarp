@@ -79,9 +79,25 @@ namespace Api.Bll
             var query = _context.Channels.AsQueryable();
             //TODO aplicar filtro
             //TODO llamar a get all con el filtro
-            var channel = await query.Where( x => x.Name.Equals(channelName) ).FirstOrDefaultAsync();
+            var channel = await query
+                .Where( x => x.Name.Equals(channelName) )
+                .Include(c=>c.Sessions.Where(s => s.State != Domain.Enums.Channel.CHANNEL_STATE.FINISHED))
+                .FirstOrDefaultAsync();
             
             return _mapper?.Map<ChannelResponse>(channel)??null;
+        }
+
+        public async Task<ChannelResponse?> GetByIdAsync(int channelId)
+        {
+            var query = _context.Channels.AsQueryable();
+            //TODO aplicar filtro
+            //TODO llamar a get all con el filtro
+            var channel = await query
+                .Where(x => x.Id.Equals(channelId))
+                .Include(c => c.Sessions.Where(s => s.State != Domain.Enums.Channel.CHANNEL_STATE.FINISHED))
+                .FirstOrDefaultAsync();
+
+            return _mapper?.Map<ChannelResponse>(channel) ?? null;
         }
     }
       

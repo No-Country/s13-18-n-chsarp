@@ -37,6 +37,13 @@ namespace Api.Controllers
             return  channel!=null?Ok(channel):NotFound(); 
         }
 
+        [HttpGet("{channelId:int}")]
+        public async Task<ActionResult<ChannelResponse>> GetByid(int channelId)
+        {
+            var channel = await _service.GetByIdAsync(channelId);
+            return channel != null ? Ok(channel) : NotFound();
+        }
+
         [Obsolete]
         [HttpPatch("{id:int}")]
         public async Task<ActionResult<ChannelResponse>> Patch(int id, [FromBody] JsonPatchDocument patchDoc)

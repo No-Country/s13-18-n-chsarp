@@ -1,5 +1,6 @@
 ﻿using Api.Domain.Entities;
 using Api.Domain.Enums.Channel;
+using Api.Domain.ViewModels.Reviews;
 
 namespace Api.Domain.ViewModels.Server
 {
@@ -9,6 +10,7 @@ namespace Api.Domain.ViewModels.Server
         public int ChannelId { get; set; }
         public string Name { get; set; } = string.Empty;
         public Guid ModeratorId { get; set; }
+        public ReviewListResponse? Reviews { get; set; }
         public List<MessageVModel> Messages { get; set; } = new List<MessageVModel>();
         public string ModeratorName { get; set; } = string.Empty;
         public DateTime Created_Date { get; set; }
