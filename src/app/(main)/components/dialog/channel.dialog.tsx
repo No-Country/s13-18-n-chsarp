@@ -2,7 +2,8 @@ import type { FC, ReactElement } from 'react';
 
 import { Dialog, DialogContent } from '@/components/ui';
 import { useHandleModal } from '@/hooks';
-import { ModalTypeKeys } from '@/models';
+import { AppRoutes, ModalTypeKeys } from '@/models';
+import Link from 'next/link';
 import { useChannel } from '../../hooks/use.channel';
 
 export const ChannelDialog: FC = (): ReactElement => {
@@ -10,6 +11,8 @@ export const ChannelDialog: FC = (): ReactElement => {
     modalType: ModalTypeKeys.CHANNEL,
   });
   const { channel, status } = useChannel();
+
+  console.log(channel);
 
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
@@ -21,8 +24,11 @@ export const ChannelDialog: FC = (): ReactElement => {
         "
       >
         {status.isLoading && <p>Cargando...</p>}
-        {!channel && <p> No hay información del canal </p>}
-        {channel && <h1>{channel?.name}</h1>}
+        {!status.isLoading && !channel && <p> No hay información del canal </p>}
+        {!status.isLoading && channel && <h1>{channel?.name}</h1>}
+        <Link href={AppRoutes.CHAT_ID(1, 1)} onClick={handleClose}>
+          Prueba
+        </Link>
       </DialogContent>
     </Dialog>
   );

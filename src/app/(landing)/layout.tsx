@@ -12,7 +12,7 @@ const LandingLayout: FC<PropsWithChildren> = ({
 }: PropsWithChildren): ReactElement => {
   const { user } = useUserContext((state) => state);
 
-  if (user?.token) redirect(AppRoutes.CHAT);
+  if (user?.token) redirect(AppRoutes.CHANNEL);
 
   return (
     <div className="relative">

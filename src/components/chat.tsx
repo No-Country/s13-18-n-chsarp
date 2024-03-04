@@ -69,6 +69,12 @@ export const useSession = ({ sessionFn, setMessages }: useSessionProps) => {
 export const useChat = ({ id }: useChatProps) => {
   const { user } = useUserContext((store) => store);
 
+  const options = {
+    accessTokenFactory: () => {
+      return user?.token as string;
+    },
+  };
+
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   const [connection, setConnection] = useState<HubConnection | null>(null);
@@ -94,7 +100,7 @@ export const useChat = ({ id }: useChatProps) => {
       if (!sessionIsNull) {
         (async () => {
           const newConnection = new HubConnectionBuilder()
-            .withUrl('https://s13.runasp.net/chat')
+            .withUrl('https://s13.runasp.net/chat', options)
             .configureLogging(LogLevel.Information)
             .build();
 
