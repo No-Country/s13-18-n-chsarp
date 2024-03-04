@@ -1,8 +1,10 @@
 'use client';
-import { Button, buttonVariants } from '@/components/ui';
-import { cn } from '@/lib';
+
 import Image from 'next/image';
 import type { FC, ReactElement } from 'react';
+
+import { Button, buttonVariants } from '@/components/ui';
+import { cn } from '@/lib';
 
 const LandingPage: FC = (): ReactElement => {
   return (

@@ -1,5 +1,4 @@
 import { NavProps } from '@/app/(landing)/models';
-import { ModeToggle } from '@/components';
 import { NavButtons } from './nav.buttons';
 
 export const NavModal = ({ handleClose }: NavProps) => {

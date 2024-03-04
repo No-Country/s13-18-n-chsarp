@@ -7,7 +7,7 @@ import { ModalType, type ModalTypeProps } from '@/models';
  * @param { UseModalInfoProps } param0 - Props del manejador del hook de modal.
  */
 export const useHandleModal = ({ modalType }: ModalTypeProps) => {
-  const { isOpen, data, type, onClose } = useModal();
+  const { isOpen, data, type, onOpen, onClose } = useModal();
 
   /**
    * Verificación del modal específico abierto.
@@ -21,5 +21,5 @@ export const useHandleModal = ({ modalType }: ModalTypeProps) => {
     onClose();
   };
 
-  return { data, isModalOpen, handleClose };
+  return { data, isModalOpen, onOpen, handleClose };
 };

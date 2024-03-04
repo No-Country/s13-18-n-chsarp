@@ -1,4 +1,4 @@
-import { useUserStore } from '@/hooks';
+import { useUserContext } from '@/hooks';
 import { cn } from '@/lib';
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const Message = ({ prevUser, userName, text }: Props) => {
-  const { user } = useUserStore();
+  const { user } = useUserContext((store) => store);
   const isLoggedUser = user?.user.name === userName;
   const isSameAsPreviousUser = userName === prevUser;
 

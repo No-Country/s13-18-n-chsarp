@@ -9,8 +9,8 @@ import {
   EmailInput,
   PasswordInput,
 } from '../form_items';
-import { AuthType } from '../models';
-import { useSignIn } from './hooks';
+import { AuthType } from '@/app/(landing)/models';
+import { useSignIn } from '@/app/(landing)/hooks';
 
 export const SignInForm: FC = (): ReactElement => {
   const { form, status, handleSignIn } = useSignIn();

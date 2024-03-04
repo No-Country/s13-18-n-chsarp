@@ -1,6 +1,7 @@
 'use client';
 
-import { useFetchAndLoad, useUserStore } from '@/hooks';
+import { MediaRoom } from '@/app/(main)/components/media.room';
+import { useFetchAndLoad, useUserContext } from '@/hooks';
 import { Axios } from '@/lib';
 import { AxiosCall, Session } from '@/models';
 import { loadAbort } from '@/utils';
@@ -9,7 +10,7 @@ import {
   HubConnectionBuilder,
   LogLevel,
 } from '@microsoft/signalr';
-import { redirect } from 'next/navigation';
+import { redirect, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChatHeader } from './chat-header';
 import { ChatInput } from './chat-input';
@@ -66,7 +67,7 @@ export const useSession = ({ sessionFn, setMessages }: useSessionProps) => {
 
 // use.chat.ts
 export const useChat = ({ id }: useChatProps) => {
-  const { user } = useUserStore();
+  const { user } = useUserContext((store) => store);
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
@@ -168,7 +169,9 @@ export const Chat = ({ id }: ChatProps) => {
   } = useChat({
     id,
   });
-
+  const params = useSearchParams();
+  // En dado caso que de error el isVideo por crear la respuesta en booleano, cambiar la validación 1.1
+  const isVideo: boolean = new Boolean(params.get('video')).valueOf();
   return (
     <div className="flex flex-col h-full">
       <ChatHeader />
@@ -177,7 +180,18 @@ export const Chat = ({ id }: ChatProps) => {
           Loading...
         </div>
       )}
-      {!chatIsLoading && (
+      {
+        // Validación 1.1.
+        isVideo && (
+          <MediaRoom
+            chatId={id}
+            video={isVideo}
+            audio={true}
+            params={{ channelId: id }}
+          />
+        )
+      }
+      {!chatIsLoading && !isVideo && (
         <>
           <div ref={messagesContainerRef} className="overflow-y-auto">
             <MessageList messages={messages} />

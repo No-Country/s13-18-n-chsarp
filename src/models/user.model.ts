@@ -1,3 +1,14 @@
+export interface UserActions {
+  setUser: (user: UserLogged) => void;
+  emptyUser: () => void;
+}
+
+export interface UserState {
+  user: UserLogged | null;
+}
+
+export type UserStore = UserState & UserActions;
+
 // Modelo del usuario.
 export interface User {
   name: string;
