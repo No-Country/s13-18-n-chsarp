@@ -3,8 +3,8 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { ApiRoutes, AppRoutes } from '@/models';
 import { useUserContext } from '@/hooks';
+import { ApiRoutes, AppRoutes } from '@/models';
 
 interface UseMediaRoomProps {
   chatId: string;
@@ -54,7 +54,7 @@ export const useMediaRoom = ({ chatId }: UseMediaRoomProps) => {
    * @returns { void } Redirection to general chat.
    */
   const redirectToHome = (): void => {
-    return router.push(AppRoutes.HOME);
+    return router.push(AppRoutes.CHANNEL);
   };
 
   return { token, redirectToHome };

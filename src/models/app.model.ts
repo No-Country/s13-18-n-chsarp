@@ -6,4 +6,6 @@ export const AppRoutes = {
   CHANNEL_ID: (channelId: number) => `/channel/${channelId}`,
   CHAT_ID: (channelId: number, chatId: number) =>
     `/channel/${channelId}/chat/${chatId}`,
+  CALL: (channelId: number, chatId: number) =>
+    `/channel/${channelId}/chat/${chatId}?video=true`,
 };

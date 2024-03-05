@@ -117,7 +117,7 @@ export const useChat = ({ id }: useChatProps) => {
             // TODO: arreglar esto
             userName: user?.user.name,
             sessionId: +id,
-            chatRoom: 'Prueba',
+            chatRoom: 'secret',
           });
 
           setConnection(newConnection);
@@ -175,12 +175,15 @@ export const Chat = ({ id }: ChatProps) => {
   } = useChat({
     id,
   });
-  const params = useSearchParams();
+  const searchParams = useSearchParams();
+
   // En dado caso que de error el isVideo por crear la respuesta en booleano, cambiar la validación 1.1
-  const isVideo: boolean = new Boolean(params.get('video')).valueOf();
+  const isVideo: boolean = new Boolean(searchParams.get('video')).valueOf();
+
+  console.log(isVideo);
+
   return (
     <div className="flex flex-col h-full">
-      <ChatHeader />
       {chatIsLoading && (
         <div className="h-full flex justify-center items-center">
           Loading...
@@ -188,7 +191,7 @@ export const Chat = ({ id }: ChatProps) => {
       )}
       {
         // Validación 1.1.
-        isVideo && (
+        !chatIsLoading && isVideo && (
           <MediaRoom
             chatId={id}
             video={isVideo}
@@ -199,6 +202,7 @@ export const Chat = ({ id }: ChatProps) => {
       }
       {!chatIsLoading && !isVideo && (
         <>
+          <ChatHeader />
           <div ref={messagesContainerRef} className="overflow-y-auto">
             <MessageList messages={messages} />
           </div>
