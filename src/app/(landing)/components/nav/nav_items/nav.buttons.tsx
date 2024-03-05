@@ -30,7 +30,7 @@ export const NavButtons: FC<NavButtonsProps> = ({
           className={cn(
             buttonVariants({
               className:
-                'bg-gradient-to-br from-green-400 to-teal-400 dark:text-white dark:text-white',
+                'bg-gradient-to-br from-green-400 to-teal-400 dark:text-white',
             }),
             mobile && 'w-full'
           )}

@@ -15,6 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChatHeader } from './chat-header';
 import { ChatInput } from './chat-input';
 import { MessageList } from './message-list';
+import { Separator } from './ui';
 
 // chat-api.model
 const SESSIONS_BASE_PATH = '/Sessions';
@@ -201,26 +202,33 @@ export const Chat = ({ id }: ChatProps) => {
           Loading...
         </div>
       )}
-      {
-        // Validación 1.1.
-        !chatIsLoading && isVideo && (
-          <MediaRoom
-            chatId={id}
-            video={isVideo}
-            audio={true}
-            params={{ channelId: id }}
-          />
-        )
-      }
-      {!chatIsLoading && !isVideo && (
+
+      {!chatIsLoading && (
         <>
           <ChatHeader />
-          <div ref={messagesContainerRef} className="overflow-y-auto">
-            <MessageList messages={messages} />
-          </div>
-          <div className="mt-auto min-h-[62px] flex items-center">
-            <ChatInput connection={connection} setConnection={setConnection} />
-          </div>
+          <Separator />
+          {isVideo && (
+            <MediaRoom
+              chatId={id}
+              video={isVideo}
+              audio={true}
+              params={{ channelId: id }}
+            />
+          )}
+          {!isVideo && (
+            <>
+              <div ref={messagesContainerRef} className="overflow-y-auto mx-1">
+                <MessageList messages={messages} />
+              </div>
+              <Separator />
+              <div className="mt-auto min-h-[62px] flex items-center">
+                <ChatInput
+                  connection={connection}
+                  setConnection={setConnection}
+                />
+              </div>
+            </>
+          )}
         </>
       )}
     </div>

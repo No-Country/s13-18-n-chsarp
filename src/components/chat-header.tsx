@@ -11,7 +11,7 @@ export const ChatHeader = () => {
   const { channelId, chatId } = useParams();
 
   return (
-    <div className="flex justify-between items-center text-white border-b-2 border-white dark:border-black pb-6 gap-12">
+    <div className="flex justify-between items-center text-white px-6 py-3 gap-12">
       <CircleEllipsis className="dark:text-black" />
       <div className="flex flex-1 justify-end">
         <Button
