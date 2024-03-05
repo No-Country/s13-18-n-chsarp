@@ -35,7 +35,8 @@ public static class AuthSeeds
             DateOfBirth = DateTime.Now.AddYears(20),
             Gender = "N/A",
             UrlProfileImage = null,
-            Country = null
+            Country = null,
+            IsVerified = true
         };
 
         var result = await _userManager.CreateAsync(user, password);

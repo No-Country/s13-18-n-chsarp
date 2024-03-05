@@ -1,5 +1,6 @@
 using Api.Domain.Interfaces.Dal;
 using Api.Domain.ViewModels.Login;
+using Azure.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,7 +26,7 @@ namespace api.Controllers
                 return BadRequest(result);
 
             var response =
-                new RegisterResponse(result.jwt, result.email, result.message, result.isSuccesfully, result.user, result.Role);
+                new RegisterResponse(result.jwt, result.email, result.message, result.isSuccesfully, result.user, result.Role, result.user.IsVerified);
 
             return CreatedAtAction(nameof(Register), response);
         }
@@ -42,7 +43,7 @@ namespace api.Controllers
                 return BadRequest(result);
 
             var response =
-                new RegisterResponse(result.jwt, result.email, result.message, result.isSuccesfully, result.user, result.Role);
+                new RegisterResponse(result.jwt, result.email, result.message, result.isSuccesfully, result.user, result.Role, result.user.IsVerified);
 
             return CreatedAtAction(nameof(ChangeRol), response);
         }
@@ -55,9 +56,22 @@ namespace api.Controllers
             if (!result.isSuccesfully)
                 return Unauthorized(result);
 
-            var response = new LoginResponse(result.jwt, result.email, result.message, true, result.user, result.Role);
+            var response = new LoginResponse(result.jwt, result.email, result.message, true, result.user, result.Role, result.user.IsVerified);
 
             return Ok(response);
+        }
+
+        [HttpPost("confirmUser")]
+        [Authorize]
+        public async Task<ActionResult<RegisterResponse>> Confirm()
+        {
+            var email = HttpContext.User.Claims.Where(c => c.Type == "Email").FirstOrDefault().Value;
+            var result = await _authRepository.UserOk(email);
+
+            if (!result.isSuccesfully)
+                return BadRequest(result);
+
+            return Ok(result);
         }
     }
 }

@@ -118,6 +118,8 @@ namespace Api.Controllers.Hubs
                 if (session.ModeratorId.ToString() != IdModeratorJWT) return "Not mod";
                 await Clients.Group(connection.ChatRoom)
                     .SendAsync("ReceiveSpecificMessage", "ADMIN", $"{name} cerró la sesión de la sala: {connection.ChatRoom}");
+                await Clients.Group(connection.ChatRoom)
+                    .SendAsync("CloseChat");
                 var users = await _connectionUserService.GetAllBySessionId(connection.SessionId);
                 if (users != null)
                 {

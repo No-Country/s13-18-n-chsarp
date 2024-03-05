@@ -7,5 +7,6 @@ namespace Api.Domain.Interfaces.Dal
         Task<RegisterResponse> Register(RegisterRequest request);
         Task<RegisterResponse> ChangeRol(RegisterModeratorRequest request, string email);
         Task<LoginResponse> Login(LoginRequest request);
+        Task<RegisterResponse> UserOk(string email);
     }
 }
