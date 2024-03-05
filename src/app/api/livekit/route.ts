@@ -1,12 +1,13 @@
 import { AccessToken } from 'livekit-server-sdk';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { SearchParamsModel, ApiErrors, HTTP_CODE_ERRORS } from '@/models';
+import { ApiErrors, HTTP_CODE_ERRORS, SearchParamsModel } from '@/models';
 
 export async function GET(req: NextRequest) {
   const room = req.nextUrl.searchParams.get(SearchParamsModel.ROOM);
   const username = req.nextUrl.searchParams.get(SearchParamsModel.USERNAME);
 
+  console.log('hola');
   if (!room) {
     return NextResponse.json(
       { error: ApiErrors.ROOM_MISSING },
@@ -34,5 +35,5 @@ export async function GET(req: NextRequest) {
 
   at.addGrant({ room, roomJoin: true, canPublish: true, canSubscribe: true });
 
-  return NextResponse.json({ token: at.toJwt() });
+  return NextResponse.json({ token: await at.toJwt() });
 }

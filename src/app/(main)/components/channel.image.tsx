@@ -18,7 +18,9 @@ export const ChannelImage: FC<ChannelImageProps> = ({
 }: ChannelImageProps): JSX.Element => {
   const channelNameArray = alt.split(' ');
   const channelTitle =
-    channelNameArray[0][0] + channelNameArray[1][0].toUpperCase();
+    channelNameArray.length > 1
+      ? channelNameArray[0][0] + channelNameArray[1][0].toUpperCase()
+      : channelNameArray[0][0].toUpperCase();
 
   return (
     <div

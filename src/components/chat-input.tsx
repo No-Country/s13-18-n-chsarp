@@ -48,7 +48,7 @@ export function ChatInput({ connection, setConnection }: ChatInputProps) {
       <form
         autoComplete="off"
         onSubmit={form.handleSubmit(sendMessage)}
-        className="flex gap-4 w-full"
+        className="flex gap-4 w-full px-6 py-3"
       >
         <FormField
           name="message"

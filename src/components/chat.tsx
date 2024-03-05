@@ -3,7 +3,7 @@
 import { MediaRoom } from '@/app/(main)/components/media.room';
 import { useFetchAndLoad, useUserContext } from '@/hooks';
 import { Axios } from '@/lib';
-import { AxiosCall, Session } from '@/models';
+import { AppRoutes, AxiosCall, Session } from '@/models';
 import { loadAbort } from '@/utils';
 import {
   HubConnection,
@@ -15,6 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChatHeader } from './chat-header';
 import { ChatInput } from './chat-input';
 import { MessageList } from './message-list';
+import { Separator } from './ui';
 
 // chat-api.model
 const SESSIONS_BASE_PATH = '/Sessions';
@@ -32,6 +33,7 @@ export interface useChatProps extends ChatProps {}
 export interface useSessionProps {
   sessionFn: (params: any) => AxiosCall<Session>;
   setMessages: (messages: Message[]) => void;
+  setChatRoomName: (name: string) => void;
 }
 
 // chat.service.ts
@@ -46,7 +48,11 @@ export const getSession = (params: any): AxiosCall<Session> => {
 };
 
 // use.session.ts
-export const useSession = ({ sessionFn, setMessages }: useSessionProps) => {
+export const useSession = ({
+  sessionFn,
+  setMessages,
+  setChatRoomName,
+}: useSessionProps) => {
   const [sessionIsNull, setSessionIsNull] = useState(false);
   const { loading, callEndpoint } = useFetchAndLoad();
 
@@ -54,7 +60,9 @@ export const useSession = ({ sessionFn, setMessages }: useSessionProps) => {
     async (param: any): Promise<void> => {
       const response = await callEndpoint(sessionFn(param));
       if (response?.data) {
+        console.log(response?.data);
         setMessages(response.data.messages);
+        setChatRoomName(response.data.name);
       } else {
         setSessionIsNull(true);
       }
@@ -69,16 +77,26 @@ export const useSession = ({ sessionFn, setMessages }: useSessionProps) => {
 export const useChat = ({ id }: useChatProps) => {
   const { user } = useUserContext((store) => store);
 
+  console.log(user?.token);
+
+  const options = {
+    accessTokenFactory: () => {
+      return user?.token as string;
+    },
+  };
+
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   const [connection, setConnection] = useState<HubConnection | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [chatRoomName, setChatRoomName] = useState('');
   const [messagesAreLoading, setMessagesAreLoading] = useState(true);
   const [chatIsLoading, setChatIsLoading] = useState(true);
 
   const { handleGetSessionMessages, sessionIsNull } = useSession({
     sessionFn: getSession,
     setMessages,
+    setChatRoomName,
   });
 
   useEffect(() => {
@@ -94,7 +112,7 @@ export const useChat = ({ id }: useChatProps) => {
       if (!sessionIsNull) {
         (async () => {
           const newConnection = new HubConnectionBuilder()
-            .withUrl('https://s13.runasp.net/chat')
+            .withUrl('https://s13.runasp.net/chat', options)
             .configureLogging(LogLevel.Information)
             .build();
 
@@ -106,25 +124,28 @@ export const useChat = ({ id }: useChatProps) => {
             setMessages((messages) => [...messages, { userName, text: msg }]);
           });
 
+          // newConnection.on('CloseChat', () => {
+          //   console.log('Close chat');
+          // });
+
           await newConnection.start();
           await newConnection.invoke('JoinSpecificChatRoom', {
             // TODO: arreglar esto
             userName: user?.user.name,
             sessionId: +id,
-            chatRoom: 'Prueba',
+            chatRoom: chatRoomName,
           });
 
           setConnection(newConnection);
           setChatIsLoading(false);
         })();
       } else {
-        redirect('/chat');
+        redirect(AppRoutes.CHANNEL);
       }
     }
   }, [messagesAreLoading]);
 
   useEffect(() => {
-    // Scroll to the bottom of the container when messages change
     if (messagesContainerRef.current && !chatIsLoading) {
       messagesContainerRef.current.scrollTop =
         messagesContainerRef.current.scrollHeight;
@@ -169,36 +190,45 @@ export const Chat = ({ id }: ChatProps) => {
   } = useChat({
     id,
   });
-  const params = useSearchParams();
+  const searchParams = useSearchParams();
+
   // En dado caso que de error el isVideo por crear la respuesta en booleano, cambiar la validación 1.1
-  const isVideo: boolean = new Boolean(params.get('video')).valueOf();
+  const isVideo: boolean = new Boolean(searchParams.get('video')).valueOf();
+
   return (
     <div className="flex flex-col h-full">
-      <ChatHeader />
       {chatIsLoading && (
         <div className="h-full flex justify-center items-center">
           Loading...
         </div>
       )}
-      {
-        // Validación 1.1.
-        isVideo && (
-          <MediaRoom
-            chatId={id}
-            video={isVideo}
-            audio={true}
-            params={{ channelId: id }}
-          />
-        )
-      }
-      {!chatIsLoading && !isVideo && (
+
+      {!chatIsLoading && (
         <>
-          <div ref={messagesContainerRef} className="overflow-y-auto">
-            <MessageList messages={messages} />
-          </div>
-          <div className="mt-auto min-h-[62px] flex items-center">
-            <ChatInput connection={connection} setConnection={setConnection} />
-          </div>
+          <ChatHeader />
+          <Separator />
+          {isVideo && (
+            <MediaRoom
+              chatId={id}
+              video={isVideo}
+              audio={true}
+              params={{ channelId: id }}
+            />
+          )}
+          {!isVideo && (
+            <>
+              <div ref={messagesContainerRef} className="overflow-y-auto mx-1">
+                <MessageList messages={messages} />
+              </div>
+              <Separator />
+              <div className="mt-auto min-h-[62px] flex items-center">
+                <ChatInput
+                  connection={connection}
+                  setConnection={setConnection}
+                />
+              </div>
+            </>
+          )}
         </>
       )}
     </div>

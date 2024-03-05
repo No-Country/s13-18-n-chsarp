@@ -34,12 +34,11 @@ export const useChangeButton = ({
    */
   const handleClick = (): void => {
     if (!isModalOpen) {
-      console.log({ channelName });
       onOpen(ModalType.CHANNEL, { channelData: { channelName } });
     }
 
     if (params.channelId !== id.toString()) {
-      router.push(AppRoutes.CHAT_ID(id));
+      router.push(AppRoutes.CHANNEL_ID(id));
     }
   };
 

@@ -16,6 +16,7 @@ export const useChannel = () => {
     async (channelName: string) => {
       const response = await callEndpoint(getChannel(channelName));
 
+      console.log(response);
       if (response.data) {
         const channel = channelAdapter(response.data);
         setChannel(channel);

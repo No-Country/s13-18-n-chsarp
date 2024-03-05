@@ -6,7 +6,7 @@ interface Props {
 
 export const MessageList = ({ messages }: Props) => {
   return (
-    <div className="flex flex-col w-full gap-y-1 overflow-y-auto px-1">
+    <div className="flex flex-col w-full gap-y-1 overflow-y-auto px-6">
       {messages.map((message, i) => (
         <Message
           key={i}
