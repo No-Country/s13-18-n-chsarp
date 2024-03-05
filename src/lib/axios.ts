@@ -5,6 +5,7 @@ import axios, {
 
 import { errorResponseInterceptor } from '@/interceptors';
 import { API_PREFIX, BASE_API_URL } from '@/models';
+import { responseInterceptor } from '@/interceptors/response.interceptos';
 
 /**
  * Instancia de axios.
@@ -14,4 +15,4 @@ export const Axios: AxiosInstance = axios.create({
 });
 
 Axios.interceptors.request.use((req: InternalAxiosRequestConfig) => req);
-Axios.interceptors.response.use((res) => res, errorResponseInterceptor);
+Axios.interceptors.response.use(responseInterceptor, errorResponseInterceptor);
