@@ -32,6 +32,7 @@ export interface useChatProps extends ChatProps {}
 export interface useSessionProps {
   sessionFn: (params: any) => AxiosCall<Session>;
   setMessages: (messages: Message[]) => void;
+  setChatRoomName: (name: string) => void;
 }
 
 // chat.service.ts
@@ -46,7 +47,11 @@ export const getSession = (params: any): AxiosCall<Session> => {
 };
 
 // use.session.ts
-export const useSession = ({ sessionFn, setMessages }: useSessionProps) => {
+export const useSession = ({
+  sessionFn,
+  setMessages,
+  setChatRoomName,
+}: useSessionProps) => {
   const [sessionIsNull, setSessionIsNull] = useState(false);
   const { loading, callEndpoint } = useFetchAndLoad();
 
@@ -54,7 +59,9 @@ export const useSession = ({ sessionFn, setMessages }: useSessionProps) => {
     async (param: any): Promise<void> => {
       const response = await callEndpoint(sessionFn(param));
       if (response?.data) {
+        console.log(response?.data);
         setMessages(response.data.messages);
+        setChatRoomName(response.data.name);
       } else {
         setSessionIsNull(true);
       }
@@ -69,6 +76,8 @@ export const useSession = ({ sessionFn, setMessages }: useSessionProps) => {
 export const useChat = ({ id }: useChatProps) => {
   const { user } = useUserContext((store) => store);
 
+  console.log(user?.token);
+
   const options = {
     accessTokenFactory: () => {
       return user?.token as string;
@@ -79,12 +88,14 @@ export const useChat = ({ id }: useChatProps) => {
 
   const [connection, setConnection] = useState<HubConnection | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [chatRoomName, setChatRoomName] = useState('');
   const [messagesAreLoading, setMessagesAreLoading] = useState(true);
   const [chatIsLoading, setChatIsLoading] = useState(true);
 
   const { handleGetSessionMessages, sessionIsNull } = useSession({
     sessionFn: getSession,
     setMessages,
+    setChatRoomName,
   });
 
   useEffect(() => {
@@ -121,7 +132,7 @@ export const useChat = ({ id }: useChatProps) => {
             // TODO: arreglar esto
             userName: user?.user.name,
             sessionId: +id,
-            chatRoom: 'secret',
+            chatRoom: chatRoomName,
           });
 
           setConnection(newConnection);
