@@ -3,7 +3,7 @@
 import { MediaRoom } from '@/app/(main)/components/media.room';
 import { useFetchAndLoad, useUserContext } from '@/hooks';
 import { Axios } from '@/lib';
-import { AxiosCall, Session } from '@/models';
+import { AppRoutes, AxiosCall, Session } from '@/models';
 import { loadAbort } from '@/utils';
 import {
   HubConnection,
@@ -112,6 +112,10 @@ export const useChat = ({ id }: useChatProps) => {
             setMessages((messages) => [...messages, { userName, text: msg }]);
           });
 
+          // newConnection.on('CloseChat', () => {
+          //   console.log('Close chat');
+          // });
+
           await newConnection.start();
           await newConnection.invoke('JoinSpecificChatRoom', {
             // TODO: arreglar esto
@@ -124,13 +128,12 @@ export const useChat = ({ id }: useChatProps) => {
           setChatIsLoading(false);
         })();
       } else {
-        redirect('/chat');
+        redirect(AppRoutes.CHANNEL);
       }
     }
   }, [messagesAreLoading]);
 
   useEffect(() => {
-    // Scroll to the bottom of the container when messages change
     if (messagesContainerRef.current && !chatIsLoading) {
       messagesContainerRef.current.scrollTop =
         messagesContainerRef.current.scrollHeight;
@@ -179,8 +182,6 @@ export const Chat = ({ id }: ChatProps) => {
 
   // En dado caso que de error el isVideo por crear la respuesta en booleano, cambiar la validación 1.1
   const isVideo: boolean = new Boolean(searchParams.get('video')).valueOf();
-
-  console.log(isVideo);
 
   return (
     <div className="flex flex-col h-full">
