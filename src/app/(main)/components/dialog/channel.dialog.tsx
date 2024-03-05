@@ -41,7 +41,7 @@ export const ChannelDialog: FC = (): ReactElement => {
             {channel.sessions.length > 0 && (
               <ul className="flex flex-col gap-2">
                 {channel.sessions.map((session) => (
-                  <li>
+                  <li key={session.id}>
                     <Link
                       href={AppRoutes.CHAT_ID(session.channelId, session.id)}
                       onClick={handleClose}
