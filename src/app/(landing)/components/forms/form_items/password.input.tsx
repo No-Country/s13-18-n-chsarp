@@ -24,7 +24,7 @@ export const PasswordInput: FC<PasswordInputProps> = ({
 
   return (
     <FormItem className="flex flex-col">
-      <div className="flex flex-1 justify-between">
+      <div className="flex flex-1 justify-between dark:bg-[#996966]">
         <FormLabel className="text-[#5D8966]"> Contraseña : </FormLabel>
         <Button
           className="bg-transparent hover:bg-transparent px-0 mx-0 text-[#5D8966] gap-x-2 h-1"

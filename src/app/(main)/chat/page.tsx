@@ -1,3 +1,5 @@
+'use client';
+
 import { NoChat } from '@/components';
 
 const page = () => {
