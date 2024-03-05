@@ -6,9 +6,9 @@ using AutoMapper;
 
 namespace Api.Domain.Utilities
 {
-    public class AutomapperProfile: Profile
+    public class AutomapperProfile : Profile
     {
-        public AutomapperProfile() 
+        public AutomapperProfile()
         {
             CreateMap<Session, SessionResponse>().IncludeAllDerived();
 
