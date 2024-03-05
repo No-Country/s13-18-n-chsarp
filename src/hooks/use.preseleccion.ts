@@ -3,11 +3,7 @@
 import { type PreseleccionSchema } from '@/app/preseleccion/models';
 import { preseleccionSchema } from '@/app/preseleccion/schemas';
 import { preseleccionServices, uploadImage } from '@/app/preseleccion/services';
-import {
-  useFetchAndLoad,
-  useToast,
-  useUserStore /*, useUserContext */,
-} from '@/hooks';
+import { useFetchAndLoad, useToast, useUserContext } from '@/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -17,8 +13,8 @@ export const usePreseleccion = () => {
     resolver: zodResolver(preseleccionSchema),
   });
 
-  // const { user } = useUserContext(state => state);
-  const { user } = useUserStore();
+  const { user } = useUserContext((state) => state);
+  // const { user } = useUserStore();
 
   const { toast } = useToast();
   const { loading, callEndpoint } = useFetchAndLoad();
