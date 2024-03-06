@@ -14,6 +14,11 @@ export const useUserActions = () => {
     onClose();
   };
 
+  const saveMentor = (data: any) => {
+    const user = createUserAdapter(data);
+    setUser(user);
+  };
+
   const clearUser = () => {
     emptyUser();
     localStorage.removeItem(StoresNames.user);
@@ -23,5 +28,6 @@ export const useUserActions = () => {
   return {
     saveUser,
     clearUser,
+    saveMentor,
   };
 };

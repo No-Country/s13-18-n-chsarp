@@ -37,7 +37,7 @@ export const AuthFooter: FC<AuthFooterProps> = ({
           {authText(isRegister)}
           {Loader}
         </Button>
-        {authType === AuthType.register && (
+        {/* {authType === AuthType.register && (
           <Button
             className="
               bg-[#0F7D7C] text-white rounded-full hover:bg-[#036C6B]
@@ -48,7 +48,7 @@ export const AuthFooter: FC<AuthFooterProps> = ({
             Sé mentor/ra
             {Loader}
           </Button>
-        )}
+        )} */}
       </AuthButtonsLayout>
       {authType === AuthType.login ? (
         <p

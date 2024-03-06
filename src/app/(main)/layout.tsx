@@ -14,8 +14,9 @@ const MainLayout: FC<PropsWithChildren> = ({
 }: PropsWithChildren): ReactElement => {
   const { user } = useUserContext((state) => state);
 
-  console.log(user);
   if (!user?.token) redirect(AppRoutes.HOME);
+  if (!user?.onboarded) redirect(AppRoutes.ONBOARDING);
+
   return (
     <div className="flex gap-[30px] h-screen relative p-2">
       <div className="hidden md:flex w-[6rem] z-30 flex-col fixed inset-y-0 py-2">

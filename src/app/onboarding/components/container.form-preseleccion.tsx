@@ -1,10 +1,10 @@
-import React, { FC, PropsWithChildren, ReactElement } from 'react';
+import { FC, PropsWithChildren, ReactElement } from 'react';
 
 export const ContainerFormPreseleccion: FC<PropsWithChildren> = ({
   children,
 }: PropsWithChildren): ReactElement => {
   return (
-    <div className="bg-[#FFFDF9] dark:bg-[#FFFDF9] py-20 h-full mx-auto min-h-screen">
+    <div className="bg-[#FFFDF9] dark:bg-[#FFFDF9] py-5 h-full mx-auto min-h-screen">
       <div
         className="bg-contain bg-start bg-no-repeat h-full flex justify-center"
         style={{ backgroundImage: 'url(./images/leaves-background.png)' }}

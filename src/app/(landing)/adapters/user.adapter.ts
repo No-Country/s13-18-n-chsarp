@@ -11,4 +11,5 @@ export const createUserAdapter = (data: any): UserLogged => ({
     gender: data.user.gender,
     //profileImgUrl: data.user?.profileImgUrl,
   },
+  onboarded: data.onboarded,
 });

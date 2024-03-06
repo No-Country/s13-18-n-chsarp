@@ -2,7 +2,7 @@
 import { Button, Form, FormField } from '@/components/ui';
 import { usePreseleccion } from '@/hooks/use.preseleccion';
 import { Loader2 } from 'lucide-react';
-import { FC, ReactElement } from 'react';
+import { FC, ReactElement, useState } from 'react';
 import { ControllerRenderProps } from 'react-hook-form';
 
 import {
@@ -16,9 +16,25 @@ import {
 } from './components';
 
 const PreseleccionPage: FC = (): ReactElement => {
+  const [isMentor, setIsMentor] = useState(false);
+  const [tutorSuccess, setTutorSuccess] = useState(false);
+  const [mentorSuccess, setMentorSuccess] = useState(false);
   const { form, status, handlePreseleccion } = usePreseleccion();
 
   const fileRef = form.register('file');
+
+  if (!isMentor) {
+    return (
+      <div className="bg-[#FFFDF9] dark:bg-[#FFFDF9] flex items-center justify-center h-screen w-full">
+        <div className="rounded-lg border-2 px-5 p-3 bg-[#5D8966] flex gap-3">
+          <Button>Soy paciente</Button>
+          <Button onClick={() => setIsMentor(true)}>Soy Mentor</Button>
+        </div>
+      </div>
+    );
+  }
+
+  console.log(form.formState.isValid);
 
   return (
     <ContainerFormPreseleccion>
@@ -41,7 +57,7 @@ const PreseleccionPage: FC = (): ReactElement => {
                 />
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="lastname"
               render={({ field }) => (
@@ -51,7 +67,7 @@ const PreseleccionPage: FC = (): ReactElement => {
                   field={field as ControllerRenderProps<any, 'lastname'>}
                 />
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="dateOfBirth"
@@ -164,8 +180,9 @@ const PreseleccionPage: FC = (): ReactElement => {
               className="bg-[#5D8966] hover:bg-[#22612F] text-white rounded-[32px] text-xl py-6 px-10"
               type="submit"
             >
-              Enviar
-              {status.isLoading && (
+              {!status.isLoading ? (
+                'Enviar'
+              ) : (
                 <Loader2 className="animate-spin h-5 w-5 ml-1.5" />
               )}
             </Button>

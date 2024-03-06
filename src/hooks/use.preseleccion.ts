@@ -1,14 +1,21 @@
 'use client';
 
-import { type PreseleccionSchema } from '@/app/preseleccion/models';
-import { preseleccionSchema } from '@/app/preseleccion/schemas';
-import { preseleccionServices, uploadImage } from '@/app/preseleccion/services';
-import { useFetchAndLoad, useToast, useUserContext } from '@/hooks';
+import { type PreseleccionSchema } from '@/app/onboarding/models';
+import { preseleccionSchema } from '@/app/onboarding/schemas';
+import { preseleccionServices, uploadImage } from '@/app/onboarding/services';
+import {
+  useFetchAndLoad,
+  useToast,
+  useUserActions,
+  useUserContext,
+} from '@/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 export const usePreseleccion = () => {
+  const { saveUser } = useUserActions();
+
   const form = useForm<PreseleccionSchema>({
     resolver: zodResolver(preseleccionSchema),
   });
@@ -60,10 +67,16 @@ export const usePreseleccion = () => {
       };
 
       if (user?.token) {
-        await callEndpoint(preseleccionServices(preselection, user?.token));
+        const response = await callEndpoint(
+          preseleccionServices(preselection, user?.token)
+        );
+
+        if (response.data) saveUser(response.data);
       }
+
+      form.reset();
     },
-    [callEndpoint]
+    [callEndpoint, saveUser]
   );
 
   return {

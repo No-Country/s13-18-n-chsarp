@@ -23,6 +23,7 @@ export interface User {
 export interface UserLogged {
   token: string;
   user: User;
+  onboarded: boolean;
 }
 export interface Session {
   id: 0;
