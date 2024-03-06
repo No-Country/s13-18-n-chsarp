@@ -10,13 +10,13 @@ export const preseleccionSchema = z.object({
       invalid_type_error: 'El nombre debe ser un texto.',
     })
     .min(3, { message: 'El nombre debe tener un mínimo de 3 carácteres.' }),
-  lastname: z
-    .string({
-      required_error: 'El apellido es requerido.',
-      invalid_type_error: 'El apellido debe ser un texto.',
-    })
-    .min(3, { message: 'El apellido debe tener un mínimo de 3 carácteres.' })
-    .optional(),
+  // lastname: z
+  //   .string({
+  //     required_error: 'El apellido es requerido.',
+  //     invalid_type_error: 'El apellido debe ser un texto.',
+  //   })
+  //   .min(3, { message: 'El apellido debe tener un mínimo de 3 carácteres.' })
+  //   .optional(),
   file:
     typeof window === 'undefined'
       ? z.any()

@@ -6,7 +6,7 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from '@/components/ui';
-import React, { FC, ReactElement } from 'react';
+import { FC, ReactElement } from 'react';
 import { ControllerRenderProps } from 'react-hook-form';
 
 interface OptionsRadioGroupProps {
@@ -30,13 +30,21 @@ export const OptionsRadioGroup: FC<OptionsRadioGroupProps> = ({
           <FormItem className="flex items-center space-x-3 space-y-0">
             <FormLabel className="font-medium text-xl text-black">Si</FormLabel>
             <FormControl>
-              <RadioGroupItem value="si" />
+              <RadioGroupItem
+                value="si"
+                checked={field.value === 'si'}
+                className="text-[#5f8868]"
+              />
             </FormControl>
           </FormItem>
           <FormItem className="flex items-center space-x-3 space-y-0">
             <FormLabel className="font-medium text-xl text-black">No</FormLabel>
             <FormControl>
-              <RadioGroupItem value="no" />
+              <RadioGroupItem
+                value="no"
+                checked={field.value === 'no'}
+                className="text-[#5f8868]"
+              />
             </FormControl>
           </FormItem>
         </RadioGroup>

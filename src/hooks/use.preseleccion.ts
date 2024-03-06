@@ -1,14 +1,24 @@
 'use client';
 
-import { type PreseleccionSchema } from '@/app/preseleccion/models';
-import { preseleccionSchema } from '@/app/preseleccion/schemas';
-import { preseleccionServices, uploadImage } from '@/app/preseleccion/services';
-import { useFetchAndLoad, useToast, useUserContext } from '@/hooks';
+import { type PreseleccionSchema } from '@/app/onboarding/models';
+import { preseleccionSchema } from '@/app/onboarding/schemas';
+import { preseleccionServices, uploadImage } from '@/app/onboarding/services';
+import {
+  useFetchAndLoad,
+  useToast,
+  useUserActions,
+  useUserContext,
+} from '@/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 export const usePreseleccion = () => {
+  const [success, setSuccess] = useState(false);
+  const [imageIsLoading, setImageIsLoading] = useState(false);
+
+  const { saveUser } = useUserActions();
+
   const form = useForm<PreseleccionSchema>({
     resolver: zodResolver(preseleccionSchema),
   });
@@ -38,6 +48,7 @@ export const usePreseleccion = () => {
   const handlePreseleccion: SubmitHandler<PreseleccionSchema> = useCallback(
     async (values: PreseleccionSchema): Promise<void> => {
       let urlProfileImage: string;
+      setImageIsLoading(true);
 
       try {
         urlProfileImage = await uploadImage(values.file![0]);
@@ -50,6 +61,7 @@ export const usePreseleccion = () => {
         });
         throw error;
       }
+      setImageIsLoading(false);
 
       const preselection = {
         dni: 'STRING',
@@ -60,15 +72,25 @@ export const usePreseleccion = () => {
       };
 
       if (user?.token) {
-        await callEndpoint(preseleccionServices(preselection, user?.token));
+        const response = await callEndpoint(
+          preseleccionServices(preselection, user?.token)
+        );
+
+        if (response.data) {
+          setSuccess(true);
+          setTimeout(() => {
+            saveUser(response.data);
+          }, 5000);
+        }
       }
     },
-    [callEndpoint]
+    [callEndpoint, saveUser]
   );
 
   return {
     form,
-    status: { isLoading: loading },
+    status: { isLoading: loading || imageIsLoading },
+    success,
     handlePreseleccion,
   };
 };

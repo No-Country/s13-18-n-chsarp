@@ -23,6 +23,8 @@ export interface User {
 export interface UserLogged {
   token: string;
   user: User;
+  onboarded: boolean;
+  role: 'User' | 'Moderator';
 }
 export interface Session {
   id: 0;

@@ -2,9 +2,10 @@
 import { Button, Form, FormField } from '@/components/ui';
 import { usePreseleccion } from '@/hooks/use.preseleccion';
 import { Loader2 } from 'lucide-react';
-import { FC, ReactElement } from 'react';
+import { FC, ReactElement, useState } from 'react';
 import { ControllerRenderProps } from 'react-hook-form';
 
+import Image from 'next/image';
 import {
   CommonInput,
   ContainerFormPreseleccion,
@@ -14,11 +15,74 @@ import {
   ParagraphHeader,
   SubtitleForm,
 } from './components';
+import { useConfirmUser } from './hooks';
 
 const PreseleccionPage: FC = (): ReactElement => {
-  const { form, status, handlePreseleccion } = usePreseleccion();
+  const [isMentor, setIsMentor] = useState(false);
+
+  const { success: userSuccess, handleConfirmUser } = useConfirmUser();
+
+  const {
+    form,
+    status,
+    success: mentorSuccess,
+    handlePreseleccion,
+  } = usePreseleccion();
 
   const fileRef = form.register('file');
+
+  if (mentorSuccess || userSuccess) {
+    return (
+      <div className="bg-[#FFFDF9] dark:bg-[#FFFDF9] flex items-center justify-center min-h-screen w-full py-5">
+        <div className="flex flex-col items-center w-4/5">
+          <p className="text-black text-5xl">¡Felicitaciones!</p>
+          <Image
+            src="/images/group-hug.png"
+            alt="group hug"
+            width={657}
+            height={436}
+            className="mt-12"
+          />
+          <p className="text-black mt-12 text-3xl">
+            Completaste tu registro en ConTAnoS
+          </p>
+          <p className="text-black text-center text-xl mt-6 font-light">
+            {mentorSuccess
+              ? 'Estamos emocionados de tenerte con nosotros y esperamos ver el increíble impacto que tendrás en la vida de nuestros usuarios'
+              : 'Estamos encantados de tenerte con nosotros. Juntos, vamos a recorrer un camino de apoyo, crecimiento y bienestar emocional.'}
+          </p>
+          <p className="text-black text-center mt-6 text-2xl italic">
+            {mentorSuccess
+              ? '¡Bienvenido/a a nuestro equipo de mentores y mentoras!'
+              : '¡Gracias por unirte a nosotros en este viaje de autoconocimiento!'}
+          </p>
+          <Image
+            src="/images/pictorial-mark.png"
+            alt="pictorial mark"
+            width={75}
+            height={65}
+            className="mt-12"
+          />
+        </div>
+      </div>
+    );
+  }
+
+  if (!isMentor) {
+    return (
+      <div className="bg-[#FFFDF9] dark:bg-[#FFFDF9] flex items-center justify-center h-screen w-full">
+        <div className="rounded-lg border-2 px-5 p-3 bg-[#5D8966] flex gap-3">
+          <Button onClick={handleConfirmUser}>
+            Soy paciente{' '}
+            {status.isLoading && (
+              <Loader2 className="animate-spin h-5 w-5 ml-1.5" />
+            )}
+          </Button>
+          <Button onClick={() => setIsMentor(true)}>Soy Mentor</Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <ContainerFormPreseleccion>
@@ -41,7 +105,7 @@ const PreseleccionPage: FC = (): ReactElement => {
                 />
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="lastname"
               render={({ field }) => (
@@ -51,7 +115,7 @@ const PreseleccionPage: FC = (): ReactElement => {
                   field={field as ControllerRenderProps<any, 'lastname'>}
                 />
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="dateOfBirth"
