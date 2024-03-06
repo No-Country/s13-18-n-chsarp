@@ -5,6 +5,7 @@ import { Loader2 } from 'lucide-react';
 import { FC, ReactElement, useState } from 'react';
 import { ControllerRenderProps } from 'react-hook-form';
 
+import Image from 'next/image';
 import {
   CommonInput,
   ContainerFormPreseleccion,
@@ -14,12 +15,19 @@ import {
   ParagraphHeader,
   SubtitleForm,
 } from './components';
+import { useConfirmUser } from './hooks';
 
 const PreseleccionPage: FC = (): ReactElement => {
   const [isMentor, setIsMentor] = useState(false);
-  const [tutorSuccess, setTutorSuccess] = useState(false);
-  const [mentorSuccess, setMentorSuccess] = useState(false);
-  const { form, status, handlePreseleccion } = usePreseleccion();
+
+  const { success: userSuccess, handleConfirmUser } = useConfirmUser();
+
+  const {
+    form,
+    status,
+    success: mentorSuccess,
+    handlePreseleccion,
+  } = usePreseleccion();
 
   const fileRef = form.register('file');
 
@@ -34,7 +42,39 @@ const PreseleccionPage: FC = (): ReactElement => {
     );
   }
 
-  console.log(form.formState.isValid);
+  if (mentorSuccess) {
+    return (
+      <div className="bg-[#FFFDF9] dark:bg-[#FFFDF9] flex items-center justify-center min-h-screen w-full py-5">
+        <div className="flex flex-col items-center w-4/5">
+          <p className="text-black text-5xl">¡Felicitaciones!</p>
+          <Image
+            src="/images/group-hug.png"
+            alt="group hug"
+            width={657}
+            height={436}
+            className="mt-12"
+          />
+          <p className="text-black mt-12 text-3xl">
+            Completaste tu registro en ConTAnoS
+          </p>
+          <p className="text-black text-center text-xl mt-6 font-light">
+            {mentorSuccess &&
+              'Estamos emocionados de tenerte con nosotros y esperamos ver el increíble impacto que tendrás en la vida de nuestros usuarios'}
+          </p>
+          <p className="text-black text-center mt-6 text-2xl italic">
+            ¡Bienvenido/a a nuestro equipo de mentores y mentoras!
+          </p>
+          <Image
+            src="/images/pictorial-mark.png"
+            alt="pictorial mark"
+            width={75}
+            height={65}
+            className="mt-12"
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <ContainerFormPreseleccion>
@@ -180,9 +220,8 @@ const PreseleccionPage: FC = (): ReactElement => {
               className="bg-[#5D8966] hover:bg-[#22612F] text-white rounded-[32px] text-xl py-6 px-10"
               type="submit"
             >
-              {!status.isLoading ? (
-                'Enviar'
-              ) : (
+              Enviar
+              {status.isLoading && (
                 <Loader2 className="animate-spin h-5 w-5 ml-1.5" />
               )}
             </Button>
