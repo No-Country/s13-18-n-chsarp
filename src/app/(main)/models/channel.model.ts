@@ -1,3 +1,6 @@
+import { addChatSchema } from '@/components';
+import { z } from 'zod';
+
 export interface Channel {
   description: string;
   id: number;
@@ -23,6 +26,8 @@ interface Session {
   type: number;
 }
 
+export type AddChatSchema = z.infer<typeof addChatSchema>;
+
 interface Message {
   sessionId: number;
   userName: string;
@@ -31,3 +36,8 @@ interface Message {
 }
 
 export type ChannelAdapted = Omit<Channel, 'logoIcon' | 'logoUrl'>;
+
+export type HandleCreateChatFn = (
+  values: AddChatSchema,
+  channelId: number
+) => void;

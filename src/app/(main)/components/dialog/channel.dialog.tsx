@@ -1,19 +1,24 @@
+'use client';
+
 import type { FC, ReactElement } from 'react';
 
 import { Dialog, DialogContent, buttonVariants } from '@/components/ui';
-import { useHandleModal } from '@/hooks';
+import { useHandleModal, useUserContext } from '@/hooks';
 import { cn } from '@/lib';
 import { AppRoutes, ModalTypeKeys } from '@/models';
+import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useChannel } from '../../hooks/use.channel';
+import { AddForm } from '../add.form';
 
 export const ChannelDialog: FC = (): ReactElement => {
+  const { user } = useUserContext((state) => state);
+
   const { isModalOpen, handleClose } = useHandleModal({
     modalType: ModalTypeKeys.CHANNEL,
   });
-  const { channel, status } = useChannel();
 
-  console.log(channel);
+  const { channel, status, handleCreateChat } = useChannel();
 
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
@@ -25,8 +30,8 @@ export const ChannelDialog: FC = (): ReactElement => {
         "
       >
         {status.isLoading && (
-          <div>
-            <p className="text-center">Cargando...</p>
+          <div className="flex justify-center">
+            <Loader2 className="animate-spin h-5 w-5 ml-1.5" />
           </div>
         )}
         {!status.isLoading && !channel && <p>No hay información del canal</p>}
@@ -59,6 +64,16 @@ export const ChannelDialog: FC = (): ReactElement => {
                   </li>
                 ))}
               </ul>
+            )}
+            {user?.role === 'Moderator' && (
+              <div className="flex justify-center mt-6">
+                <AddForm
+                  channelId={channel.id}
+                  channelName={channel.name}
+                  channelDescription={channel.description}
+                  handleCreateChat={handleCreateChat}
+                />
+              </div>
             )}
           </div>
         )}

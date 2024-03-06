@@ -1,8 +1,6 @@
 'use client';
 
-import { ChatInput, Modal, NewChannelForm, UserEditForm } from '@/components';
 import type { FC, ReactElement } from 'react';
-import { TestModalButton } from './components';
 import { Channels } from '../(main)/components/channels';
 
 const PageTest: FC = (): ReactElement => {

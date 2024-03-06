@@ -11,6 +11,7 @@ export enum ModalType {
   EDIT_USER = 'editUser',
   MENTOR_REVIEW = 'mentorReview',
   CHANNEL = 'channel',
+  ADD_CHAT = 'addChat',
 }
 
 /**
@@ -33,4 +34,5 @@ export enum ModalTypeKeys {
   EDIT_USER = 'EDIT_USER',
   MENTOR_REVIEW = 'MENTOR_REVIEW',
   CHANNEL = 'CHANNEL',
+  ADD_CHAT = 'ADD_CHAT',
 }

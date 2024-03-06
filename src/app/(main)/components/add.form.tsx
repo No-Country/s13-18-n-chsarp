@@ -1,9 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import type { FC, ReactElement } from 'react';
+import { useState, type FC, type ReactElement } from 'react';
 
-import { NewChannelForm } from '@/components';
+import { NewChatForm } from '@/components';
 import {
   Button,
   Dialog,
@@ -14,61 +14,89 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui';
-import { AddChannel } from '.';
+import { cn } from '@/lib';
+import { AddChat } from '.';
+import { HandleCreateChatFn } from '../models/channel.model';
 
-export const AddForm: FC = (): ReactElement => {
+export interface AddFormProps {
+  channelId: number;
+  channelName: string;
+  channelDescription: string;
+  handleCreateChat: HandleCreateChatFn;
+}
+
+export const AddForm: FC<AddFormProps> = ({
+  channelId,
+  channelName,
+  channelDescription,
+  handleCreateChat,
+}): ReactElement => {
+  const [step, setStep] = useState(0);
+
   return (
     <Dialog>
-      <DialogTrigger className="flex items-center gap-4 text-2xl font-medium">
-        <AddChannel />
+      <DialogTrigger className="flex justify-center">
+        <AddChat />
       </DialogTrigger>
-      <DialogContent className="bg-[#5D8966] border-none max-w-[660px] flex items-center sm:rounded-[30px]">
-        <div className="flex flex-col items-center gap-4 mt-[72px] py-[25px] w-[603px] border-white border-2 rounded-[20px]">
-          <DialogHeader className="flex flex-col items-center gap-2">
-            <DialogTitle className="text-center font-bold text-[26px]">
-              Bienestar emocional
-            </DialogTitle>
-            <Image
-              src="/images/create-chat-modal.svg"
-              alt="Create chat modal"
-              width={147}
-              height={141}
+      <DialogContent
+        className={cn(
+          'bg-[#5D8966] border-none max-w-[660px] w-4/5 rounded-[30px] px-10',
+          step === 0 && 'flex items-center'
+        )}
+      >
+        {step === 0 && (
+          <div className="flex flex-col items-center gap-4 mt-[72px] py-[25px] w-full border-white border-2 rounded-[20px]">
+            <DialogHeader className="flex flex-col items-center gap-2">
+              <DialogTitle className="text-center font-bold text-[26px]">
+                {channelName}
+              </DialogTitle>
+              <Image
+                src="/images/create-chat-modal.svg"
+                alt="Create chat modal"
+                width={147}
+                height={141}
+              />
+              <DialogDescription className="text-white text-center text-lg max-w-[470px] mx-auto">
+                <p>{channelDescription}</p>
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Dialog>
+                <DialogTrigger className="flex items-center gap-4 text-2xl font-medium">
+                  <Button
+                    onClick={() => setStep(1)}
+                    className="text-[22px] bg-[#FCD07F] border-none font-medium rounded-full px-6 hover:bg-transparent"
+                  >
+                    Crear chat +
+                  </Button>
+                </DialogTrigger>
+              </Dialog>
+            </DialogFooter>
+          </div>
+        )}
+        {step === 1 && (
+          <>
+            <DialogHeader className="flex flex-col gap-[22px] items-center w-full overflow-y-auto">
+              <DialogTitle className="font-bold text-[40px] text-wrap">
+                Chat de {channelName}
+              </DialogTitle>
+              <DialogDescription className="text-white text-xl">
+                ¡La comunidad espera ansiosa por tu chat de apoyo! 🌟
+              </DialogDescription>
+              <Image
+                src="/images/create-chat-modal.svg"
+                alt="Create chat modal"
+                width={269}
+                height={183}
+                className="object-contain"
+              />
+            </DialogHeader>
+            <NewChatForm
+              channelId={channelId}
+              handleCreateChat={handleCreateChat}
             />
-            <DialogDescription className="text-white text-center text-lg max-w-[470px] mx-auto">
-              <p>
-                Este grupo se centra en el bienestar general de la salud mental
-                y emocional, ofreciendo apoyo para lidiar con la ansiedad, la
-                depresión, el estrés y otros desafíos emocionales.
-              </p>
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Dialog>
-              <DialogTrigger className="flex items-center gap-4 text-2xl font-medium">
-                <Button className="text-[22px] bg-[#FCD07F] border-none font-medium rounded-full px-6 hover:bg-transparent">
-                  Crear chat +
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="bg-[#5D8966] border-none max-w-[660px]">
-                <DialogHeader className="flex flex-col gap-[22px] items-center">
-                  <DialogTitle className="font-bold text-[40px]">
-                    Chat de Bienestar Emocional
-                  </DialogTitle>
-                  <DialogDescription className="text-white text-xl">
-                    ¡La comunidad espera ansiosa por tu chat de apoyo! 🌟
-                  </DialogDescription>
-                  <Image
-                    src="/images/create-chat-modal.svg"
-                    alt="Create chat modal"
-                    width={269}
-                    height={183}
-                  />
-                </DialogHeader>
-                <NewChannelForm />
-              </DialogContent>
-            </Dialog>
-          </DialogFooter>
-        </div>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );

@@ -1,7 +1,7 @@
 import { Axios } from '@/lib';
 import { AxiosCall } from '@/models';
 import { loadAbort } from '@/utils';
-import { CHANNEL_BASE_PATH, ChannelsRoutes } from '../models';
+import { CHANNEL_BASE_PATH } from '../models';
 import { Channel } from '../models/channel.model';
 
 export const channelService = (): AxiosCall<Channel[]> => {

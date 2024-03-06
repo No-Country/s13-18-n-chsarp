@@ -1,4 +1,4 @@
-export * from './add-channel.dialog';
+export * from './add-chat.dialog';
 export * from './channel.dialog';
 export * from './edit-profile.dialog';
 export * from './logout.dialog';
