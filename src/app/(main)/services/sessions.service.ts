@@ -1,14 +1,14 @@
 import { Axios } from '@/lib';
 import { AxiosCall } from '@/models';
 import { loadAbort } from '@/utils';
-import { AUTH_BASE_PATH, AUTH_ROUTES } from '../models';
+import { SESSIONS_BASE_PATH } from '../models/sessions-api.mode';
 
-export const confirmUser = (token: string): AxiosCall<any> => {
-  const url = AUTH_BASE_PATH + AUTH_ROUTES.SIGN_UP_USER;
+export const createChat = (data: any, token: string): AxiosCall<any> => {
+  const url = SESSIONS_BASE_PATH;
   const Controller = loadAbort();
 
   return {
-    call: Axios.post(url, null, {
+    call: Axios.post(url, data, {
       headers: { Authorization: 'Bearer ' + token },
     }),
 

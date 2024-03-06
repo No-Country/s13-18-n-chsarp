@@ -7,7 +7,6 @@ export async function GET(req: NextRequest) {
   const room = req.nextUrl.searchParams.get(SearchParamsModel.ROOM);
   const username = req.nextUrl.searchParams.get(SearchParamsModel.USERNAME);
 
-  console.log('hola');
   if (!room) {
     return NextResponse.json(
       { error: ApiErrors.ROOM_MISSING },
