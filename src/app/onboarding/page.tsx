@@ -31,18 +31,7 @@ const PreseleccionPage: FC = (): ReactElement => {
 
   const fileRef = form.register('file');
 
-  if (!isMentor) {
-    return (
-      <div className="bg-[#FFFDF9] dark:bg-[#FFFDF9] flex items-center justify-center h-screen w-full">
-        <div className="rounded-lg border-2 px-5 p-3 bg-[#5D8966] flex gap-3">
-          <Button>Soy paciente</Button>
-          <Button onClick={() => setIsMentor(true)}>Soy Mentor</Button>
-        </div>
-      </div>
-    );
-  }
-
-  if (mentorSuccess) {
+  if (mentorSuccess || userSuccess) {
     return (
       <div className="bg-[#FFFDF9] dark:bg-[#FFFDF9] flex items-center justify-center min-h-screen w-full py-5">
         <div className="flex flex-col items-center w-4/5">
@@ -58,11 +47,14 @@ const PreseleccionPage: FC = (): ReactElement => {
             Completaste tu registro en ConTAnoS
           </p>
           <p className="text-black text-center text-xl mt-6 font-light">
-            {mentorSuccess &&
-              'Estamos emocionados de tenerte con nosotros y esperamos ver el increíble impacto que tendrás en la vida de nuestros usuarios'}
+            {mentorSuccess
+              ? 'Estamos emocionados de tenerte con nosotros y esperamos ver el increíble impacto que tendrás en la vida de nuestros usuarios'
+              : 'Estamos encantados de tenerte con nosotros. Juntos, vamos a recorrer un camino de apoyo, crecimiento y bienestar emocional.'}
           </p>
           <p className="text-black text-center mt-6 text-2xl italic">
-            ¡Bienvenido/a a nuestro equipo de mentores y mentoras!
+            {mentorSuccess
+              ? '¡Bienvenido/a a nuestro equipo de mentores y mentoras!'
+              : '¡Gracias por unirte a nosotros en este viaje de autoconocimiento!'}
           </p>
           <Image
             src="/images/pictorial-mark.png"
@@ -71,6 +63,22 @@ const PreseleccionPage: FC = (): ReactElement => {
             height={65}
             className="mt-12"
           />
+        </div>
+      </div>
+    );
+  }
+
+  if (!isMentor) {
+    return (
+      <div className="bg-[#FFFDF9] dark:bg-[#FFFDF9] flex items-center justify-center h-screen w-full">
+        <div className="rounded-lg border-2 px-5 p-3 bg-[#5D8966] flex gap-3">
+          <Button onClick={handleConfirmUser}>
+            Soy paciente{' '}
+            {status.isLoading && (
+              <Loader2 className="animate-spin h-5 w-5 ml-1.5" />
+            )}
+          </Button>
+          <Button onClick={() => setIsMentor(true)}>Soy Mentor</Button>
         </div>
       </div>
     );
