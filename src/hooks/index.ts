@@ -6,3 +6,4 @@ export * from './use.preseleccion';
 export * from './use.toast';
 export * from './use.user-actions';
 export * from './use.user-context';
+export * from './use.modal.info';
