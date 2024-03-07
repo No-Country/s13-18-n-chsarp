@@ -7,7 +7,7 @@ export * from './message';
 export * from './message-list';
 export * from './modal';
 export * from './mode-toggle';
-export * from './new-channel-form';
+export * from './new-chat-form';
 export * from './no-chat';
 export * from './user-edit-form';
 export * from './user.avatar';

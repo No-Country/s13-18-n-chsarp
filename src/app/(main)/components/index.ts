@@ -1,4 +1,4 @@
-export * from './add-channel';
+export * from './add-chat';
 export * from './avatar-icon';
 export * from './dropdown';
 export * from './sidebar';
