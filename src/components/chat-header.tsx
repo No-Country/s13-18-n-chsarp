@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib';
 import { AppRoutes } from '@/models';
-import { CircleEllipsis, Phone, Video, XCircle } from 'lucide-react';
+import { CircleEllipsis, Video, XCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { Button } from './ui';
@@ -25,16 +25,16 @@ export const ChatHeader = ({ openModalInfo }: ChatHeaderProps) => {
         <CircleEllipsis className="dark:text-black" />
       </Button>
       <div className="flex flex-1 justify-end">
-        <Button
+        {/* <Button
           variant="outline"
           className={cn('rounded-r-none text-black dark:text-white')}
         >
           <Phone />
-        </Button>
+        </Button> */}
         <Link href={AppRoutes.CALL(+channelId, +chatId)}>
           <Button
             variant="outline"
-            className={cn('rounded-l-none text-black dark:text-white')}
+            className={cn('text-black dark:text-white')}
           >
             <Video />
           </Button>
