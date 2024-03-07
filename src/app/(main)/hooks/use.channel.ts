@@ -50,7 +50,9 @@ export const useChannel = () => {
         try {
           await callEndpoint(createChat(placeholderValues, user.token));
 
-          setChannel(null);
+          if (data?.channelData?.channelName) {
+            handleChannel(data?.channelData.channelName);
+          }
         } catch (err) {
           console.log(err);
         }
@@ -60,12 +62,9 @@ export const useChannel = () => {
   );
 
   useEffect(() => {
-    if (
-      data?.channelData?.channelName &&
-      channel?.name !== data?.channelData.channelName
-    )
+    if (data?.channelData?.channelName)
       handleChannel(data?.channelData.channelName);
-  }, [channel, data, handleChannel]);
+  }, [data]);
 
   return { channel, status: { isLoading: loading }, handleCreateChat };
 };

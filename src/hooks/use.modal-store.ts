@@ -29,7 +29,12 @@ const modalStore: StateCreator<ModalState> = (set) => ({
   isOpen: false,
   data: undefined,
   onOpen: (type, data) => set({ isOpen: true, type, data }),
-  onClose: () => set({ type: null, isOpen: false }),
+  onClose: () =>
+    set({
+      type: null,
+      isOpen: false,
+      data: undefined,
+    }),
 });
 
 export const useModal = create<ModalState>()(modalStore);
