@@ -19,13 +19,13 @@ namespace Api.Controllers
 
         [Authorize(Roles = Role.Moderator)]
         [HttpPost]
-        public async Task<ActionResult> RegisterSession([FromBody] SessionRequest request)
+        public async Task<ActionResult<SessionResponse>> RegisterSession([FromBody] SessionRequest request)
         {
             var name = HttpContext.User.Claims.Where(c => c.Type == "Name").FirstOrDefault().Value;
             var id = HttpContext.User.Claims.Where(c => c.Type == "Id").FirstOrDefault().Value;
             var guidId = new Guid(id);
             var session = await _sessionService.CreateSession(request, name, guidId);
-            return Created();
+            return StatusCode(201, session);
         }
 
         [HttpGet]

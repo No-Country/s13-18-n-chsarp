@@ -33,7 +33,8 @@ public class AuthenticationRepository : IAuthenticationRepository
                 DateOfBirth = request.DateOfBirth ?? new DateTime(1, 1, 1),
                 Gender = request.Gender,
                 UrlProfileImage = null,
-                Country = null
+                Country = null,
+                IsVerified = false
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
@@ -42,17 +43,17 @@ public class AuthenticationRepository : IAuthenticationRepository
             {
                 await _userManager.AddToRoleAsync(user, Role.User);
                 var jwt = GetToken(user, new[] { new Claim("Role", Role.User) });
-                return new RegisterResponse(jwt, user.Email, "Success", true, user.ToResponse(), Role.User);
+                return new RegisterResponse(jwt, user.Email, "Success", true, user.ToResponse(), Role.User, user.IsVerified);
             }
             else
             {
                 var messages = string.Join("-", result.Errors.Select(x => $"{x.Code}|{x.Description}"));
-                return new RegisterResponse("", "", messages, false, null, null);
+                return new RegisterResponse("", "", messages, false, null, null, null);
             }
         }
         catch (Exception e)
         {
-            return new RegisterResponse("", "", e.Message, false, null, null);
+            return new RegisterResponse("", "", e.Message, false, null, null, null);
         }
     }
     public async Task<LoginResponse> Login(LoginRequest request)
@@ -63,7 +64,7 @@ public class AuthenticationRepository : IAuthenticationRepository
 
         if (user is null || !await _userManager.CheckPasswordAsync(user, request.Password))
         {
-            return new LoginResponse(null, "", "Invalid Credentials", false, null, null);
+            return new LoginResponse(null, "", "Invalid Credentials", false, null, null, user.IsVerified);
         }
 
         var authClaims = new List<Claim>
@@ -80,7 +81,7 @@ public class AuthenticationRepository : IAuthenticationRepository
 
         var token = GetToken(authClaims);
 
-        return new LoginResponse(new JwtSecurityTokenHandler().WriteToken(token), user.Email, "Login Successful", true, user.ToResponse(), userRoles[0]);
+        return new LoginResponse(new JwtSecurityTokenHandler().WriteToken(token), user.Email, "Login Successful", true, user.ToResponse(), userRoles[0], user.IsVerified);
     }
 
 
@@ -91,7 +92,7 @@ public class AuthenticationRepository : IAuthenticationRepository
         var token = new JwtSecurityToken(
             issuer: _configuration["JWT:Issuer"],
             audience: _configuration["JWT:Audience"],
-            expires: DateTime.Now.AddHours(15),
+            expires: DateTime.Now.AddHours(240),
             claims: authClaims,
             signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256));
 
@@ -133,6 +134,7 @@ public class AuthenticationRepository : IAuthenticationRepository
             user.Gender = request.Gender;
             user.UrlProfileImage = request.UrlProfileImage;
             user.Country = request.Country;
+            user.IsVerified = true;
 
             var result = await _userManager.UpdateAsync(user);
 
@@ -141,17 +143,39 @@ public class AuthenticationRepository : IAuthenticationRepository
                 await _userManager.RemoveFromRoleAsync(user, Role.User);
                 await _userManager.AddToRoleAsync(user, Role.Moderator);
                 var jwt = GetToken(user, new[] { new Claim("Role", Role.Moderator) });
-                return new RegisterResponse(jwt, user.Email, "Success", true, user.ToResponse(), Role.Moderator);
+                return new RegisterResponse(jwt, user.Email, "Success", true, user.ToResponse(), Role.Moderator, user.IsVerified);
             }
             else
             {
                 var messages = string.Join("-", result.Errors.Select(x => $"{x.Code}|{x.Description}"));
-                return new RegisterResponse("", "", messages, false, null, null);
+                return new RegisterResponse("", "", messages, false, null, null, null);
             }
         }
         catch (Exception e)
         {
-            return new RegisterResponse("", "", e.Message, false, null, null);
+            return new RegisterResponse("", "", e.Message, false, null, null, null);
+        }
+    }
+
+    public async Task<RegisterResponse> UserOk(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+
+        try
+        {
+            user.IsVerified = true;
+
+            await _userManager.UpdateAsync(user);
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            var jwt = GetToken(user, new[] { new Claim("Role", userRoles[0]) });
+
+            return new RegisterResponse(jwt, user.Email, "User onboarded", true, user.ToResponse(), userRoles[0], user.IsVerified);
+        }
+        catch (Exception e)
+        {
+            return new RegisterResponse("", "", e.Message, false, null, null, null);
         }
     }
 }
