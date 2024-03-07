@@ -9,6 +9,7 @@ public static class UserExtensions
     {
         var r = new UserResponse()
         {
+            Id = user.Id,
             DateOfBirth = user.DateOfBirth.CompareTo(DateTime.Parse("1/1/1")) == -1 ? null : user.DateOfBirth,
             Dni = user.Dni == "" ? null : user.Dni,
             Gender = user.Gender,

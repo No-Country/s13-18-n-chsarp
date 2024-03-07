@@ -2,6 +2,7 @@
 
 public class UserResponse
 {
+    public string? Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string? Dni { get; set; } = string.Empty;
     public DateTime? DateOfBirth { get; set; } = DateTime.UtcNow;
