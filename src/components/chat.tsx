@@ -1,5 +1,6 @@
 'use client';
 
+import { ModalInfo } from '@/app/(main)/components';
 import { MediaRoom } from '@/app/(main)/components/media.room';
 import { useFetchAndLoad, useModalInfo, useUserContext } from '@/hooks';
 import { Axios } from '@/lib';
@@ -16,7 +17,6 @@ import { ChatHeader } from './chat-header';
 import { ChatInput } from './chat-input';
 import { MessageList } from './message-list';
 import { Separator } from './ui';
-import { ModalInfo } from '@/app/(main)/components';
 
 // chat-api.model
 const SESSIONS_BASE_PATH = '/Sessions';
@@ -221,7 +221,10 @@ export const Chat = ({ id }: ChatProps) => {
           )}
           {!isVideo && (
             <>
-              <div ref={messagesContainerRef} className="overflow-y-auto mx-1">
+              <div
+                ref={messagesContainerRef}
+                className="overflow-y-auto mx-1 flex-1"
+              >
                 <MessageList messages={messages} />
               </div>
               <Separator />
