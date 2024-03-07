@@ -7,3 +7,5 @@ export * from './doc';
 export * from './pdf';
 export * from './broken-image';
 export * from './user-fill';
+export * from './person-off';
+export * from './delete';
