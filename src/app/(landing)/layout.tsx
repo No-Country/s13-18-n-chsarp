@@ -6,6 +6,7 @@ import type { FC, PropsWithChildren, ReactElement } from 'react';
 import { useUserContext } from '@/hooks';
 import { AppRoutes } from '@/models';
 import { Header } from './components';
+import { Footer } from './components/footer';
 
 const LandingLayout: FC<PropsWithChildren> = ({
   children,
@@ -18,6 +19,7 @@ const LandingLayout: FC<PropsWithChildren> = ({
     <div className="relative">
       <Header />
       {children}
+      <Footer />
     </div>
   );
 };
