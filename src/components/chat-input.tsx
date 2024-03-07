@@ -10,9 +10,14 @@ import { Button, Form, FormField, Input } from './ui';
 interface ChatInputProps {
   connection: HubConnection | null;
   setConnection: (newConnection: HubConnection | null) => void;
+  chatIsClosing: boolean;
 }
 
-export function ChatInput({ connection, setConnection }: ChatInputProps) {
+export function ChatInput({
+  connection,
+  setConnection,
+  chatIsClosing,
+}: ChatInputProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const formSchema = z.object({
@@ -55,7 +60,7 @@ export function ChatInput({ connection, setConnection }: ChatInputProps) {
           control={form.control}
           render={({ field }) => (
             <Input
-              disabled={isLoading}
+              disabled={isLoading || chatIsClosing}
               placeholder="Tu mensaje"
               className="dark:text-white text-black bg-background"
               {...field}

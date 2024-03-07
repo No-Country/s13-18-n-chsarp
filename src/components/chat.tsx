@@ -11,7 +11,7 @@ import {
   HubConnectionBuilder,
   LogLevel,
 } from '@microsoft/signalr';
-import { redirect, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChatHeader } from './chat-header';
 import { ChatInput } from './chat-input';
@@ -35,6 +35,8 @@ export interface useSessionProps {
   sessionFn: (params: any) => AxiosCall<Session>;
   setMessages: (messages: Message[]) => void;
   setChatRoomName: (name: string) => void;
+  setChatModeratorId: (id: string) => void;
+  setChatModeratorName: (name: string) => void;
 }
 
 // chat.service.ts
@@ -53,6 +55,8 @@ export const useSession = ({
   sessionFn,
   setMessages,
   setChatRoomName,
+  setChatModeratorId,
+  setChatModeratorName,
 }: useSessionProps) => {
   const [sessionIsNull, setSessionIsNull] = useState(false);
   const { loading, callEndpoint } = useFetchAndLoad();
@@ -64,6 +68,8 @@ export const useSession = ({
         console.log(response?.data);
         setMessages(response.data.messages);
         setChatRoomName(response.data.name);
+        setChatModeratorId(response.data.moderatorId);
+        setChatModeratorName(response.data.moderatorName);
       } else {
         setSessionIsNull(true);
       }
@@ -76,9 +82,8 @@ export const useSession = ({
 
 // use.chat.ts
 export const useChat = ({ id }: useChatProps) => {
+  const router = useRouter();
   const { user } = useUserContext((store) => store);
-
-  console.log(user?.token);
 
   const options = {
     accessTokenFactory: () => {
@@ -91,13 +96,18 @@ export const useChat = ({ id }: useChatProps) => {
   const [connection, setConnection] = useState<HubConnection | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [chatRoomName, setChatRoomName] = useState('');
+  const [chatModeratorId, setChatModeratorId] = useState('');
+  const [chatModeratorName, setChatModeratorName] = useState('');
   const [messagesAreLoading, setMessagesAreLoading] = useState(true);
   const [chatIsLoading, setChatIsLoading] = useState(true);
+  const [chatIsClosing, setChatIsClosing] = useState(false);
 
   const { handleGetSessionMessages, sessionIsNull } = useSession({
     sessionFn: getSession,
     setMessages,
     setChatRoomName,
+    setChatModeratorId,
+    setChatModeratorName,
   });
 
   useEffect(() => {
@@ -109,7 +119,7 @@ export const useChat = ({ id }: useChatProps) => {
   }, []);
 
   useEffect(() => {
-    if (!messagesAreLoading) {
+    if (!messagesAreLoading && !connection && !chatIsClosing) {
       if (!sessionIsNull) {
         (async () => {
           const newConnection = new HubConnectionBuilder()
@@ -125,9 +135,9 @@ export const useChat = ({ id }: useChatProps) => {
             setMessages((messages) => [...messages, { userName, text: msg }]);
           });
 
-          // newConnection.on('CloseChat', () => {
-          //   console.log('Close chat');
-          // });
+          newConnection.on('CloseChat', () => {
+            setChatIsClosing(true);
+          });
 
           await newConnection.start();
           await newConnection.invoke('JoinSpecificChatRoom', {
@@ -141,10 +151,28 @@ export const useChat = ({ id }: useChatProps) => {
           setChatIsLoading(false);
         })();
       } else {
-        redirect(AppRoutes.CHANNEL);
+        router.push(AppRoutes.CHANNEL);
       }
     }
-  }, [messagesAreLoading]);
+
+    return () => {
+      if (connection && !chatIsClosing) {
+        connection.invoke('LeaveChatRoom', {
+          userName: user?.user.name,
+          sessionId: +id,
+          chatRoom: chatRoomName,
+        });
+      }
+    };
+  }, [messagesAreLoading, connection]);
+
+  useEffect(() => {
+    if (chatIsClosing) {
+      setTimeout(() => {
+        router.push(AppRoutes.CHANNEL);
+      }, 2000);
+    }
+  }, [chatIsClosing]);
 
   useEffect(() => {
     if (messagesContainerRef.current && !chatIsLoading) {
@@ -159,27 +187,27 @@ export const useChat = ({ id }: useChatProps) => {
     chatIsLoading,
     setConnection,
     messagesContainerRef,
+    chatRoomName,
+    chatModeratorId,
+    chatModeratorName,
+    chatIsClosing,
   };
 };
 
 // TODO: agregar estas funciones
 // const LeaveChatRoom = async (userName, chatRoom, sessionId) => {
 //   try {
-//     if (connection != null) await connection.invoke("LeaveChatRoom", { userName, sessionId, chatRoom })
-//     setConnection(null)
+//     if (connection != null)
+//       await connection.invoke('LeaveChatRoom', {
+//         userName,
+//         sessionId,
+//         chatRoom,
+//       });
+//     setConnection(null);
 //   } catch (error) {
 //     console.log(error);
 //   }
-// }
-
-// const CloseChatRoom = async (userName, chatRoom, sessionId) => {
-//   try {
-//     await connection.invoke("CloseChatRoom", { userName, sessionId, chatRoom })
-//     setConnection(null)
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
+// };
 
 export const Chat = ({ id }: ChatProps) => {
   const {
@@ -188,6 +216,10 @@ export const Chat = ({ id }: ChatProps) => {
     chatIsLoading,
     setConnection,
     messagesContainerRef,
+    chatRoomName,
+    chatModeratorId,
+    chatModeratorName,
+    chatIsClosing,
   } = useChat({
     id,
   });
@@ -200,7 +232,15 @@ export const Chat = ({ id }: ChatProps) => {
 
   return (
     <div className="flex flex-col h-full relative">
-      <ModalInfo isOpen={isModalOpen} onClose={closeModal} />
+      <ModalInfo
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        connection={connection}
+        sessionId={id}
+        chatRoomName={chatRoomName}
+        chatModeratorId={chatModeratorId}
+        chatModeratorName={chatModeratorName}
+      />
       {chatIsLoading && (
         <div className="h-full flex justify-center items-center">
           Loading...
@@ -232,6 +272,7 @@ export const Chat = ({ id }: ChatProps) => {
                 <ChatInput
                   connection={connection}
                   setConnection={setConnection}
+                  chatIsClosing={chatIsClosing}
                 />
               </div>
             </>
