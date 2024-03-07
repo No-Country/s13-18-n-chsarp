@@ -7,12 +7,23 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { Button } from './ui';
 
-export const ChatHeader = () => {
+interface ChatHeaderProps {
+  openModalInfo: () => void;
+}
+
+export const ChatHeader = ({ openModalInfo }: ChatHeaderProps) => {
   const { channelId, chatId } = useParams();
 
   return (
     <div className="flex justify-between items-center text-white px-6 py-3 gap-12">
-      <CircleEllipsis className="dark:text-black" />
+      <Button
+        onClick={openModalInfo}
+        variant="outline"
+        size="icon"
+        className="bg-transparent border-none shadow-none hover:bg-transparent p-0"
+      >
+        <CircleEllipsis className="dark:text-black" />
+      </Button>
       <div className="flex flex-1 justify-end">
         <Button
           variant="outline"
