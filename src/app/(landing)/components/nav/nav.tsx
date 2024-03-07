@@ -30,10 +30,10 @@ export const Nav: FC = (): ReactElement => {
           </Link>
         </h1>
         <div className="flex justify-between items-center gap-x-4">
+          <ModeToggle />
           <div className="flex gap-x-4 max-md:hidden">
             <NavButtons handleClose={handleClose} />
           </div>
-          <ModeToggle />
           <Button
             className="md:hidden"
             variant="outline"
