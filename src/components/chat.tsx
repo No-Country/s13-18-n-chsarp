@@ -1,7 +1,7 @@
 'use client';
 
 import { MediaRoom } from '@/app/(main)/components/media.room';
-import { useFetchAndLoad, useUserContext } from '@/hooks';
+import { useFetchAndLoad, useModalInfo, useUserContext } from '@/hooks';
 import { Axios } from '@/lib';
 import { AppRoutes, AxiosCall, Session } from '@/models';
 import { loadAbort } from '@/utils';
@@ -16,6 +16,7 @@ import { ChatHeader } from './chat-header';
 import { ChatInput } from './chat-input';
 import { MessageList } from './message-list';
 import { Separator } from './ui';
+import { ModalInfo } from '@/app/(main)/components';
 
 // chat-api.model
 const SESSIONS_BASE_PATH = '/Sessions';
@@ -195,8 +196,11 @@ export const Chat = ({ id }: ChatProps) => {
   // En dado caso que de error el isVideo por crear la respuesta en booleano, cambiar la validación 1.1
   const isVideo: boolean = new Boolean(searchParams.get('video')).valueOf();
 
+  const { isModalOpen, openModalInfo, closeModal } = useModalInfo();
+
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full relative">
+      <ModalInfo isOpen={isModalOpen} onClose={closeModal} />
       {chatIsLoading && (
         <div className="h-full flex justify-center items-center">
           Loading...
@@ -205,7 +209,7 @@ export const Chat = ({ id }: ChatProps) => {
 
       {!chatIsLoading && (
         <>
-          <ChatHeader />
+          <ChatHeader openModalInfo={openModalInfo} />
           <Separator />
           {isVideo && (
             <MediaRoom
