@@ -2,10 +2,10 @@
 
 import type { FC, ReactElement } from 'react';
 
+import { AuthType, AuthTypeProps } from '@/app/(landing)/models';
 import { Button } from '@/components/ui';
 import { useModal } from '@/hooks';
 import { ModalType } from '@/models';
-import { AuthType, AuthTypeProps } from '@/app/(landing)/models';
 
 export const AccountParagraph: FC<AuthTypeProps> = ({
   authType,

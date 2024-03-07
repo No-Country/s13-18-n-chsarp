@@ -4,6 +4,7 @@ import { UserLogged } from '@/models';
 export const createUserAdapter = (data: any): UserLogged => ({
   token: data.jwt,
   user: {
+    id: data.user.id,
     name: data.user.name,
     email: data.email,
     //description: data.user.description,

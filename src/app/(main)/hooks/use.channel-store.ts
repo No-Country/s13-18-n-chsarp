@@ -10,6 +10,7 @@ interface ChannelStore {
   channels: Channel[] | null;
   loading: boolean;
   getChannels: () => Promise<void>;
+  clearChannels: () => void;
 }
 
 const channelStore: StateCreator<ChannelStore> = (set) => ({
@@ -24,6 +25,7 @@ const channelStore: StateCreator<ChannelStore> = (set) => ({
     set({ loading: false });
     if (response?.data) set({ channels: response.data });
   },
+  clearChannels: () => set({ channels: null }),
 });
 
 export const useChannelStore = create<ChannelStore>()(

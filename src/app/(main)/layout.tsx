@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import type { FC, PropsWithChildren, ReactElement } from 'react';
 
 import { ModeToggle } from '@/components';
-import { useUserContext } from '@/hooks';
+import { useModal, useUserContext } from '@/hooks';
 import { AppRoutes } from '@/models';
 import { Sidebar } from './components';
 import { MobileToggle } from './components/mobile.toggle';
@@ -13,6 +13,10 @@ const MainLayout: FC<PropsWithChildren> = ({
   children,
 }: PropsWithChildren): ReactElement => {
   const { user } = useUserContext((state) => state);
+
+  const { data } = useModal();
+
+  console.log(data);
 
   if (!user?.token) redirect(AppRoutes.HOME);
   if (!user?.onboarded) redirect(AppRoutes.ONBOARDING);

@@ -11,6 +11,7 @@ export type UserStore = UserState & UserActions;
 
 // Modelo del usuario.
 export interface User {
+  id: string;
   name: string;
   email?: string;
   description?: string;
