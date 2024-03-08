@@ -4,9 +4,21 @@ import Image from 'next/image';
 import type { FC, ReactElement } from 'react';
 
 import { Button, buttonVariants } from '@/components/ui';
+import { useModal } from '@/hooks';
 import { cn } from '@/lib';
+import { ModalType } from '@/models';
+import { useNav } from './hooks';
 
 const LandingPage: FC = (): ReactElement => {
+  const { onOpen } = useModal();
+  const handleNav = (modalType: ModalType) => {
+    onOpen(modalType);
+    handleClose();
+  };
+
+  const { setModalIsOpen } = useNav();
+  const handleClose = () => setModalIsOpen(false);
+
   return (
     <div className="bg-[#FFFDF9] dark:bg-[#FFFDF9] pt-16 h-full mx-auto min-h-screen">
       <div className="container p-8 md:p-12 relative min-h-[750px] md:min-h-[650px] min-w-80">
@@ -21,30 +33,19 @@ const LandingPage: FC = (): ReactElement => {
           <p className="md:mt-10 sm:mt-8 mt-6 text-[#4A5568] text-lg/9 mb-6 lg:mb-10">
             Empatía, comprensión y apoyo en cada interacción.
           </p>
-          <div className="w-full md:w-48 flex flex-col gap-6 lg:gap-8">
+          <div className="w-full md:w-60 flex flex-col gap-6 lg:gap-8">
             <Button
+              onClick={() => handleNav(ModalType.REGISTER)}
               className={cn(
                 buttonVariants({
                   className:
-                    'text-white dark:text-white bg-[#5D8966] hover:bg-[#5D8966]/70 shadow-3xl',
+                    'text-white dark:text-white bg-[#263238] hover:bg-[#263238]/70 shadow-3xl roundex-[5px]',
                   size: 'lg',
                   variant: 'default',
                 })
               )}
             >
-              Quiero compartir →
-            </Button>
-            <Button
-              className={cn(
-                buttonVariants({
-                  className:
-                    'text-white dark:text-white bg-[#263238] hover:bg-[#263238]/70 shadow-3xl',
-                  size: 'lg',
-                  variant: 'default',
-                })
-              )}
-            >
-              Quiero escuchar →
+              Quiero ser mentor en ConTAnoS →
             </Button>
           </div>
         </div>
