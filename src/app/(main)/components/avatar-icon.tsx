@@ -4,15 +4,17 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui';
+import { useUserContext } from '@/hooks';
 import { EditProfileDialog, LogoutDialog, UserHelpDialog } from './dialog';
 import { UserInformation } from './user.information';
 
 export const AvatarIcon = () => {
+  const { user } = useUserContext((state) => state);
   return (
     <div className="max-h-[137px] max-w-[95px] pt-6 pb-4 border-white border-b-2">
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <UserAvatar />
+          <UserAvatar src={user?.user.profileImgUrl} />
         </DropdownMenuTrigger>
 
         <DropdownMenuContent

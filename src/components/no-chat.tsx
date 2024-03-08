@@ -4,10 +4,12 @@ export const NoChat = () => {
   return (
     <div className="flex justify-center items-center h-full">
       <div className="text-center">
-        <h1 className="text-white font-medium text-5xl">¡Hola!</h1>
-        <h2 className="text-white font-medium text-2xl mt-3">
+        <h1 className="text-white font-medium text-5xl">
+          Juntos, enfrentamos los desafíos emocionales
+        </h1>
+        {/* <h2 className="text-white font-medium text-2xl mt-3">
           Por el momento, aún no has creado canales
-        </h2>
+        </h2> */}
         <Image
           src="/images/no-chat.svg"
           alt="no chat image"
