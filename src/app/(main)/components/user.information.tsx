@@ -1,6 +1,6 @@
 import type { FC, ReactElement } from 'react';
 
-import { UserAvatar } from '@/components';
+import { ModeToggle, UserAvatar } from '@/components';
 import { useUserContext } from '@/hooks';
 
 export const UserInformation: FC = (): ReactElement => {
@@ -14,6 +14,9 @@ export const UserInformation: FC = (): ReactElement => {
           <p className="text-sm lg:text-lg font-semibold">{user?.user.name}</p>
           <p className="text-xs lg:text-base font-light">{user?.user.email}</p>
         </div>
+      </div>
+      <div className="ml-auto text-black dark:text-white">
+        <ModeToggle />
       </div>
     </div>
   );

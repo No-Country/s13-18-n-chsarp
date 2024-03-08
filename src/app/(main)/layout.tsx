@@ -3,7 +3,6 @@
 import { redirect } from 'next/navigation';
 import type { FC, PropsWithChildren, ReactElement } from 'react';
 
-import { ModeToggle } from '@/components';
 import { useModal, useUserContext } from '@/hooks';
 import { AppRoutes } from '@/models';
 import { Sidebar } from './components';
@@ -30,9 +29,9 @@ const MainLayout: FC<PropsWithChildren> = ({
         {children}
       </main>
       {/* placeholder */}
-      <div className="rounded-full absolute right-5 top-5">
-        <ModeToggle />
-      </div>
+      {/* <div className="rounded-full absolute right-5 top-5"> */}
+      {/* <ModeToggle /> */}
+      {/* </div> */}
       <div className="absolute md:hidden bottom-5 left-5 bg-white rounded-lg">
         <MobileToggle />
       </div>

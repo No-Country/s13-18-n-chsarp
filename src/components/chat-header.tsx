@@ -40,7 +40,15 @@ export const ChatHeader = ({ openModalInfo }: ChatHeaderProps) => {
           </Button>
         </Link>
       </div>
-      <XCircle className="dark:text-black" />
+      <Button
+        variant="outline"
+        size="icon"
+        className="bg-transparent border-none shadow-none hover:bg-transparent p-0"
+      >
+        <Link href={AppRoutes.CHANNEL}>
+          <XCircle className="dark:text-black" />
+        </Link>
+      </Button>
     </div>
   );
 };

@@ -14,7 +14,7 @@ export const Message = ({ prevUser, userName, text }: Props) => {
 
   if (userName === 'ADMIN') {
     return (
-      <div className="bg-[#ebf3f9] px-3 py-2 rounded-xl flex flex-col max-w-[400px] text-black self-center last:mb-2 first:mt-2">
+      <div className="bg-[#ebf3f9] px-3 py-2 rounded-xl flex flex-col max-w-[400px] text-black self-center last:mb-2 first:mt-2 text-center">
         <p>{text}</p>
       </div>
     );
